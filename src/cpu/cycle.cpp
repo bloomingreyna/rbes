@@ -1,18 +1,9 @@
 #include <cpu/cpu.h>
 #include <memory/memory.h>
 
-inline void CPU::PhaseOne() {
-    address_bus = target_address;
+inline void CPU::ExecutionLogic() {
     if (rw_line == RWline::WRITE) {
         data_bus = data_queue;
-    }
-}
-
-inline void CPU::PhaseTwo() {
-    if (fetching) {
-        FetchInstruction();
-    } else {
-        ExecuteInstruction();
     }
 
     switch (rw_line) {
@@ -23,4 +14,21 @@ inline void CPU::PhaseTwo() {
             data_bus = memory->Read(address_bus);
         }
     }
+
+    switch (inst_step) {
+        case InstructionStep::FETCH: {
+            FetchInstruction();
+            break;
+        }
+        case InstructionStep::CALCULATE_ADDRESS: {
+            CalculateAddress();
+            break;
+        };
+        case InstructionStep::EXECUTE: {
+            ExecuteInstruction();
+            break;
+        }
+    }
+
+    latch_register = data_bus;
 }

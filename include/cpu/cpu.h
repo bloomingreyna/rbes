@@ -1,30 +1,41 @@
+#include <array>
 #include <cstdint>
 
+#include <cpu/alu.h>
 #include <cpu/enums.h>
 
 class Memory;
 
 class CPU {
 public:
-    inline void PhaseOne();
-    inline void PhaseTwo();
+    inline void ExecutionLogic();
 
     inline void FetchInstruction();
+    inline void CalculateAddress();
     inline void ExecuteInstruction();
+
+    inline void CompleteAddressingMode();
     inline void CompleteInstruction();
-private:
+
+    /* ----|----|---- */
+
+    ALU alu;
     Memory* memory;
 
     int cycle_step = 0;
 
+    bool address_ready = false;
+    std::array<void(*)(CPU&, int), 256> addressing_mode_array;
+    std::array<void(*)(CPU&, int), 256> instruction_array;
+
     Instruction instruction;
-    bool fetching = true;
+    InstructionStep inst_step = InstructionStep::FETCH;
 
     uint16_t address_bus;
     uint8_t data_bus;
+    uint8_t latch_register;
 
     // Instructions modify these values to modify address/data buses for next cycle
-    uint16_t target_address;
     uint8_t data_queue;
 
     bool irq_interrupt = false;

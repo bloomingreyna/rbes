@@ -1,4 +1,8 @@
-#include <cpu/cpu.h>
+#include <array>
+
+#include <cpu/enums.h>
+
+class CPU;
 
 namespace instructions {
     namespace access {
