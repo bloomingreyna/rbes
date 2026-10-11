@@ -3,6 +3,8 @@
 #include <memory/memory.h>
 
 inline void addressing_modes::Immediate(CPU& cpu, int step) {
+    cpu.program_counter++;
+
     cpu.CompleteAddressingMode();
     cpu.ExecuteInstruction();
 }
