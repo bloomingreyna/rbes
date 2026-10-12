@@ -2,19 +2,6 @@
 #include <memory/memory.h>
 
 inline void CPU::ExecutionLogic() {
-    if (rw_line == RWline::WRITE) {
-        data_bus = data_queue;
-    }
-
-    switch (rw_line) {
-        case RWline::WRITE: {
-            memory->Write(address_bus, data_bus);
-        }
-        case RWline::READ: {
-            data_bus = memory->Read(address_bus);
-        }
-    }
-
     switch (inst_step) {
         case InstructionStep::FETCH: {
             FetchInstruction();
@@ -30,5 +17,20 @@ inline void CPU::ExecutionLogic() {
         }
     }
 
-    latch_register = data_bus;
+    switch (rw_line) {
+        case RWline::WRITE: {
+            memory->Write(address_bus, data_bus);
+            if (inst_step == InstructionStep::FETCH) {
+                address_bus = program_counter;
+            }
+            break;
+        }
+        case RWline::READ: {
+            if (inst_step == InstructionStep::FETCH) {
+                address_bus = program_counter;
+            }
+            data_bus = memory->Read(address_bus);
+            break;
+        }
+    }
 }

@@ -3,16 +3,18 @@
 
 inline void Indirect(CPU& cpu, int step) {
     switch (step) {
-        case 0: { // Low pointer byte latched
+        case 0: {
+            cpu.latch_register = cpu.data_bus;
             cpu.address_bus = ++cpu.program_counter;
-            cpu.program_counter++;
             break;
         }
         case 1: {
             cpu.address_bus = (cpu.data_bus << 8) | cpu.latch_register;
+            cpu.program_counter++;
             break;
         }
-        case 2: { // Low target address byte latched
+        case 2: {
+            cpu.latch_register = cpu.data_bus;
 
             // Due to a bug in the original CPU, incrementing the pointer address to
             // retrieve the high byte of the target address does not properly cross 
@@ -46,7 +48,8 @@ inline void IndirectX(CPU& cpu, int step) {
             cpu.address_bus &= 0xFF;
             break;
         }
-        case 2: { // Low target address byte latched
+        case 2: {
+            cpu.latch_register = cpu.data_bus;
             cpu.address_bus++;
             cpu.address_bus &= 0xFF;
             break;
@@ -67,7 +70,8 @@ inline void IndirectY(CPU& cpu, int step) {
             cpu.program_counter++;
             break;
         }
-        case 1: { // Low target address byte latched
+        case 1: {
+            cpu.latch_register = cpu.data_bus;
             cpu.address_bus++;
             cpu.address_bus &= 0xFF;
             break;

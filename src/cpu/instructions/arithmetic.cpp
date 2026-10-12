@@ -26,18 +26,17 @@ inline void instructions::arithmetic::SubtractWithCarry(CPU& cpu, int step) {
 inline void instructions::arithmetic::IncrementMemory(CPU& cpu, int step) {
     switch (step) {
         case 0: {
-            cpu.rw_line = RWline::WRITE;
-            cpu.data_queue = cpu.data_bus;
-            break;
-        }
-        case 1: {
-            cpu.alu.Increment(cpu.latch_register);
-            cpu.data_queue = cpu.alu.result;
+            cpu.alu.Increment(cpu.data_bus);
             cpu.status &= cpu.alu.clear_mask;
             cpu.status |= cpu.alu.status;
             break;
         }
+        case 1: {
+            cpu.rw_line = RWline::WRITE;
+            break;
+        }
         case 2: {
+            cpu.data_bus = cpu.alu.result;
             cpu.CompleteInstruction();
             break;
         }
@@ -67,18 +66,17 @@ inline void instructions::arithmetic::IncrementY(CPU& cpu, int step) {
 inline void instructions::arithmetic::DecrementMemory(CPU& cpu, int step) {
     switch (step) {
         case 0: {
-            cpu.rw_line = RWline::WRITE;
-            cpu.data_queue = cpu.data_bus;
-            break;
-        }
-        case 1: {
-            cpu.alu.Decrement(cpu.latch_register);
-            cpu.data_queue = cpu.alu.result;
+            cpu.alu.Decrement(cpu.data_bus);
             cpu.status &= cpu.alu.clear_mask;
             cpu.status |= cpu.alu.status;
             break;
         }
+        case 1: {
+            cpu.rw_line = RWline::WRITE;
+            break;
+        }
         case 2: {
+            cpu.data_bus = cpu.alu.result;
             cpu.CompleteInstruction();
             break;
         }

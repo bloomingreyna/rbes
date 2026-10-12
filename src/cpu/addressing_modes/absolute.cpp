@@ -3,13 +3,14 @@
 
 inline void addressing_modes::Absolute(CPU& cpu, int step) {
     switch (step) {
-        case 0: { // Low address byte latched
+        case 0: {
+            cpu.latch_register = cpu.data_bus;
             cpu.address_bus = ++cpu.program_counter;
-            cpu.program_counter++;
             break;
         }
         case 1: {
             cpu.address_bus = (cpu.data_bus << 8) | cpu.latch_register;
+            cpu.program_counter++;
 
             cpu.CompleteAddressingMode();
             break;
@@ -19,14 +20,15 @@ inline void addressing_modes::Absolute(CPU& cpu, int step) {
 
 inline void addressing_modes::AbsoluteX(CPU& cpu, int step) {
     switch (step) {
-        case 0: { // Low base address byte latched
+        case 0: {
+            cpu.latch_register = cpu.data_bus;
             cpu.address_bus = ++cpu.program_counter;
-            cpu.program_counter++;
             break;
         }
         case 1: {
             cpu.alu.AddWithCarry(cpu.latch_register, cpu.x_index, false);
             cpu.address_bus = (cpu.data_bus << 8) | cpu.alu.result;
+            cpu.program_counter++;
 
             // TODO: Always "oops" for store instructions
             if ((cpu.alu.status & Flag::CARRY) == 0) {
@@ -47,14 +49,15 @@ inline void addressing_modes::AbsoluteX(CPU& cpu, int step) {
 
 inline void addressing_modes::AbsoluteY(CPU& cpu, int step) {
     switch (step) {
-        case 0: { // Low base address byte latched
+        case 0: {
+            cpu.latch_register = cpu.data_bus;
             cpu.address_bus = ++cpu.program_counter;
-            cpu.program_counter++;
             break;
         }
         case 1: {
             cpu.alu.AddWithCarry(cpu.latch_register, cpu.y_index, false);
             cpu.address_bus = (cpu.data_bus << 8) | cpu.alu.result;
+            cpu.program_counter++;
 
             // TODO: Always "oops" for store instructions
             if ((cpu.alu.status & Flag::CARRY) != 0) {

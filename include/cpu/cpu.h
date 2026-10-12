@@ -24,7 +24,6 @@ public:
 
     int cycle_step = 0;
 
-    bool address_ready = false;
     std::array<void(*)(CPU&, int), 256> addressing_mode_array;
     std::array<void(*)(CPU&, int), 256> instruction_array;
 
@@ -33,10 +32,8 @@ public:
 
     uint16_t address_bus;
     uint8_t data_bus;
-    uint8_t latch_register;
 
-    // Instructions modify these values to modify address/data buses for next cycle
-    uint8_t data_queue;
+    uint8_t latch_register;
 
     bool irq_interrupt = false;
     bool nmi_interrupt = false; // Ignores I flag on status register
