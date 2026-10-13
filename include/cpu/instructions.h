@@ -47,7 +47,9 @@ namespace instructions {
         inline void BIT(CPU& cpu, int step);
     }
     namespace compare {
-        inline void Compare(CPU& cpu, int step);
+        inline void CompareAccumulator(CPU& cpu, int step);
+        inline void CompareX(CPU& cpu, int step);
+        inline void CompareY(CPU& cpu, int step);
     }
     namespace branch {
         inline void BranchCarryClear(CPU& cpu, int step);
@@ -65,9 +67,9 @@ namespace instructions {
     namespace jump {
         inline void Jump(CPU& cpu, int step);
         inline void JumpToSubroutine(CPU& cpu, int step);
-        
-        inline void ReturnSubroutine(CPU& cpu, int step);
-        inline void ReturnInterrupt(CPU& cpu, int step);
+
+        inline void ReturnFromSubroutine(CPU& cpu, int step);
+        inline void ReturnFromInterrupt(CPU& cpu, int step);
 
         inline void Break(CPU& cpu, int step);
     }

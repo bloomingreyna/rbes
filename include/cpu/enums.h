@@ -3,6 +3,7 @@ enum class Flag : uint8_t {
     ZERO = 0x02,
     INTERRUPT_DISABLE = 0x04,
     DECIMAL = 0x08,
+    BREAK = 0x10,
     OVERFLOW = 0x40,
     NEGATIVE = 0x80
 };
@@ -26,5 +27,5 @@ constexpr uint8_t operator&(uint8_t lhs, Flag rhs) {
     return lhs & static_cast<uint8_t>(rhs);
 }
 constexpr uint8_t operator|(uint8_t lhs, Flag rhs) {
-    
+    return lhs | static_cast<uint8_t>(rhs);
 }

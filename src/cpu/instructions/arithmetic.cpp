@@ -31,7 +31,7 @@ inline void instructions::arithmetic::IncrementMemory(CPU& cpu, int step) {
             cpu.status |= cpu.alu.status;
             break;
         }
-        case 1: {
+        case 1: { // Simulate routing ALU output to data bus
             cpu.rw_line = RWline::WRITE;
             break;
         }
@@ -71,7 +71,7 @@ inline void instructions::arithmetic::DecrementMemory(CPU& cpu, int step) {
             cpu.status |= cpu.alu.status;
             break;
         }
-        case 1: {
+        case 1: { // Simulate routing ALU output to data bus
             cpu.rw_line = RWline::WRITE;
             break;
         }
