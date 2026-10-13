@@ -55,7 +55,7 @@ inline void instructions::arithmetic::IncrementX(CPU& cpu, int step) {
 
 inline void instructions::arithmetic::IncrementY(CPU& cpu, int step) {
     cpu.alu.Increment(cpu.y_index);
-    
+
     cpu.y_index = cpu.alu.result;
     cpu.status &= cpu.alu.clear_mask;
     cpu.status |= cpu.alu.status;
