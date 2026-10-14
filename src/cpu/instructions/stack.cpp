@@ -65,6 +65,12 @@ inline void instructions::stack::PullStatus(CPU& cpu, int step) {
     }
 }
 
-inline void instructions::stack::TransferXtoStack(CPU& cpu, int step) {}
+inline void instructions::stack::TransferXtoStack(CPU& cpu, int step) {
+    cpu.stack_pointer = cpu.x_index;
+    cpu.CompleteInstruction();
+}
 
-inline void instructions::stack::TransferStackToX(CPU& cpu, int step) {}
+inline void instructions::stack::TransferStackToX(CPU& cpu, int step) {
+    cpu.x_index = cpu.stack_pointer;
+    cpu.CompleteInstruction();
+}
