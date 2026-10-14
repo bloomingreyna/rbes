@@ -1,12 +1,12 @@
 #include <cpu/cpu.h>
 #include <cpu/instructions.h>
 
-inline void instructions::jump::Jump(CPU& cpu, int step) {
+void instructions::jump::Jump(CPU& cpu, int step) {
     cpu.program_counter = cpu.data_bus;
     cpu.CompleteInstruction();
 }
 
-inline void instructions::jump::JumpToSubroutine(CPU&cpu, int step) {
+void instructions::jump::JumpToSubroutine(CPU&cpu, int step) {
     switch (step) {
         case 0: {
             cpu.rw_line = RWline::WRITE;
@@ -31,7 +31,7 @@ inline void instructions::jump::JumpToSubroutine(CPU&cpu, int step) {
     }
 }
 
-inline void instructions::jump::ReturnFromSubroutine(CPU& cpu, int step) {
+void instructions::jump::ReturnFromSubroutine(CPU& cpu, int step) {
     switch (step) {
         case 0: { break; } // Dead cycle
         case 1: {
@@ -58,7 +58,7 @@ inline void instructions::jump::ReturnFromSubroutine(CPU& cpu, int step) {
     }
 }
 
-inline void instructions::jump::ReturnFromInterrupt(CPU& cpu, int step) {
+void instructions::jump::ReturnFromInterrupt(CPU& cpu, int step) {
     switch (step) {
         case 0: { break; } // Dead cycle
         case 1: {
@@ -66,10 +66,10 @@ inline void instructions::jump::ReturnFromInterrupt(CPU& cpu, int step) {
             break;
         }
         case 2: {
-            cpu.status_register &= 0b00110000;
-            cpu.status_register |= cpu.data_bus & 0b11001111;
+            cpu.status &= 0b00110000;
+            cpu.status |= cpu.data_bus & 0b11001111;
 
-            cpu.irq_interrupt = (cpu.status_register & Flag::INTERRUPT_DISABLE) == 0;
+            cpu.irq_interrupt = (cpu.status & Flag::INTERRUPT_DISABLE) == 0;
 
             cpu.address_bus = 0x0100 + ++cpu.stack_pointer;
             break;
@@ -88,14 +88,15 @@ inline void instructions::jump::ReturnFromInterrupt(CPU& cpu, int step) {
             cpu.CompleteInstruction();
             break;
         }
+    }
 }
 
-inline void instructions::jump::Break(CPU& cpu, int step) {
+void instructions::jump::Break(CPU& cpu, int step) {
     switch (step) {
         case 0: {
             cpu.rw_line = RWline::WRITE;
 
-            cpu.data_bus = cpu.status_register | 0b00110000;
+            cpu.data_bus = cpu.status | 0b00110000;
             cpu.address_bus = 0x0100 + cpu.stack_pointer--;
             break;
         }

@@ -1,7 +1,7 @@
 #include <cpu/addressing_modes.h>
 #include <cpu/cpu.h>
 
-inline void Indirect(CPU& cpu, int step) {
+void Indirect(CPU& cpu, int step) {
     switch (step) {
         case 0: {
             cpu.latch_register = cpu.data_bus;
@@ -36,7 +36,7 @@ inline void Indirect(CPU& cpu, int step) {
     }
 }
 
-inline void IndirectX(CPU& cpu, int step) {
+void IndirectX(CPU& cpu, int step) {
     switch (step) {
         case 0: {
             cpu.address_bus = cpu.data_bus;
@@ -63,7 +63,7 @@ inline void IndirectX(CPU& cpu, int step) {
     }
 }
 
-inline void IndirectY(CPU& cpu, int step) {
+void IndirectY(CPU& cpu, int step) {
     switch (step) {
         case 0: {
             cpu.address_bus = cpu.data_bus;

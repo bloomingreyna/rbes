@@ -1,7 +1,7 @@
 #include <cpu/addressing_modes.h>
 #include <cpu/cpu.h>
 
-inline void addressing_modes::Absolute(CPU& cpu, int step) {
+void addressing_modes::Absolute(CPU& cpu, int step) {
     switch (step) {
         case 0: {
             cpu.latch_register = cpu.data_bus;
@@ -18,7 +18,7 @@ inline void addressing_modes::Absolute(CPU& cpu, int step) {
     }
 }
 
-inline void addressing_modes::AbsoluteX(CPU& cpu, int step) {
+void addressing_modes::AbsoluteX(CPU& cpu, int step) {
     switch (step) {
         case 0: {
             cpu.latch_register = cpu.data_bus;
@@ -47,7 +47,7 @@ inline void addressing_modes::AbsoluteX(CPU& cpu, int step) {
     }
 }
 
-inline void addressing_modes::AbsoluteY(CPU& cpu, int step) {
+void addressing_modes::AbsoluteY(CPU& cpu, int step) {
     switch (step) {
         case 0: {
             cpu.latch_register = cpu.data_bus;

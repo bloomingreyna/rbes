@@ -1,3 +1,5 @@
+#pragma once
+
 #include <array>
 #include <cstdint>
 
@@ -8,14 +10,16 @@ class Memory;
 
 class CPU {
 public:
-    inline void ExecutionLogic();
+    CPU();
 
-    inline void FetchInstruction();
-    inline void CalculateAddress();
-    inline void ExecuteInstruction();
+    void ExecutionLogic();
 
-    inline void CompleteAddressingMode();
-    inline void CompleteInstruction();
+    void FetchInstruction();
+    void CalculateAddress();
+    void ExecuteInstruction();
+
+    void CompleteAddressingMode();
+    void CompleteInstruction();
 
     /* ----|----|---- */
 

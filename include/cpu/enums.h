@@ -1,3 +1,5 @@
+#pragma once
+
 enum class Flag : uint8_t {
     CARRY = 0x01,
     ZERO = 0x02,

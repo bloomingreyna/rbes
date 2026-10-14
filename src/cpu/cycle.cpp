@@ -1,7 +1,7 @@
 #include <cpu/cpu.h>
 #include <memory/memory.h>
 
-inline void CPU::ExecutionLogic() {
+void CPU::ExecutionLogic() {
     switch (inst_step) {
         case InstructionStep::FETCH: {
             FetchInstruction();

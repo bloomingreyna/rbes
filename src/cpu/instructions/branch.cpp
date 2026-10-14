@@ -1,7 +1,7 @@
 #include <cpu/cpu.h>
 #include <cpu/instructions.h>
 
-inline bool BranchPageCross(CPU& cpu) {
+bool BranchPageCross(CPU& cpu) {
     uint8_t pc_low = cpu.program_counter & 0xFF;
     uint16_t result = pc_low + cpu.data_bus;
     cpu.program_counter &= 0xFF00;
@@ -19,7 +19,7 @@ inline bool BranchPageCross(CPU& cpu) {
     return false;
 }
 
-inline void AdjustHighByte(CPU& cpu) {
+void AdjustHighByte(CPU& cpu) {
     if ((cpu.data_bus & 0x80) == 0) {
         cpu.program_counter += 1 << 8;
     } else {
@@ -27,11 +27,11 @@ inline void AdjustHighByte(CPU& cpu) {
     }
 }
 
-inline void instructions::branch::BranchCarryClear(CPU& cpu, int step) {
+void instructions::branch::BranchCarryClear(CPU& cpu, int step) {
     switch (step) {
         case 0: {
             cpu.program_counter++;
-            if ((cpu.status_register & Flag::CARRY) != 0) {
+            if ((cpu.status & Flag::CARRY) != 0) {
                 cpu.CompleteInstruction();
             }
             break;
@@ -50,11 +50,11 @@ inline void instructions::branch::BranchCarryClear(CPU& cpu, int step) {
     }
 }
 
-inline void instructions::branch::BranchCarrySet(CPU& cpu, int step) {
+void instructions::branch::BranchCarrySet(CPU& cpu, int step) {
     switch (step) {
         case 0: {
             cpu.program_counter++;
-            if ((cpu.status_register & Flag::CARRY) == 0) {
+            if ((cpu.status & Flag::CARRY) == 0) {
                 cpu.CompleteInstruction();
             }
             break;
@@ -73,35 +73,11 @@ inline void instructions::branch::BranchCarrySet(CPU& cpu, int step) {
     }
 }
 
-inline void instructions::branch::BranchEqual(CPU& cpu, int step) {
+void instructions::branch::BranchEqual(CPU& cpu, int step) {
     switch (step) {
         case 0: {
             cpu.program_counter++;
-            if ((cpu.status_register & Flag::ZERO) != 0) {
-                cpu.CompleteInstruction();
-            }
-            break;
-        }
-        case 1: {
-            if (!BranchPageCross(cpu)) {
-                cpu.CompleteInstruction();
-            }
-            break;
-        }
-        case 2: {
-            AdjustHighByte(cpu);
-            cpu.CompleteInstruction();
-            break;
-        }
-    }
-
-}
-
-inline void instructions::branch::BranchNotEqual(CPU& cpu, int step) {
-    switch (step) {
-        case 0: {
-            cpu.program_counter++;
-            if ((cpu.status_register & Flag::ZERO) == 0) {
+            if ((cpu.status & Flag::ZERO) != 0) {
                 cpu.CompleteInstruction();
             }
             break;
@@ -121,11 +97,11 @@ inline void instructions::branch::BranchNotEqual(CPU& cpu, int step) {
 
 }
 
-inline void instructions::branch::BranchPositive(CPU& cpu, int step) {
+void instructions::branch::BranchNotEqual(CPU& cpu, int step) {
     switch (step) {
         case 0: {
             cpu.program_counter++;
-            if ((cpu.status_register & Flag::NEGATIVE) != 0) {
+            if ((cpu.status & Flag::ZERO) == 0) {
                 cpu.CompleteInstruction();
             }
             break;
@@ -145,11 +121,11 @@ inline void instructions::branch::BranchPositive(CPU& cpu, int step) {
 
 }
 
-inline void instructions::branch::BranchNegative(CPU& cpu, int step) {
+void instructions::branch::BranchPositive(CPU& cpu, int step) {
     switch (step) {
         case 0: {
             cpu.program_counter++;
-            if ((cpu.status_register & Flag::NEGATIVE) == 0) {
+            if ((cpu.status & Flag::NEGATIVE) != 0) {
                 cpu.CompleteInstruction();
             }
             break;
@@ -169,11 +145,11 @@ inline void instructions::branch::BranchNegative(CPU& cpu, int step) {
 
 }
 
-inline void instructions::branch::BranchOverflowClear(CPU& cpu, int step) {
+void instructions::branch::BranchNegative(CPU& cpu, int step) {
     switch (step) {
         case 0: {
             cpu.program_counter++;
-            if ((cpu.status_register & Flag::OVERFLOW) != 0) {
+            if ((cpu.status & Flag::NEGATIVE) == 0) {
                 cpu.CompleteInstruction();
             }
             break;
@@ -193,11 +169,35 @@ inline void instructions::branch::BranchOverflowClear(CPU& cpu, int step) {
 
 }
 
-inline void instructions::branch::BranchOverflowSet(CPU& cpu, int step) {
+void instructions::branch::BranchOverflowClear(CPU& cpu, int step) {
     switch (step) {
         case 0: {
             cpu.program_counter++;
-            if ((cpu.status_register & Flag::OVERFLOW) == 0) {
+            if ((cpu.status & Flag::OVERFLOW) != 0) {
+                cpu.CompleteInstruction();
+            }
+            break;
+        }
+        case 1: {
+            if (!BranchPageCross(cpu)) {
+                cpu.CompleteInstruction();
+            }
+            break;
+        }
+        case 2: {
+            AdjustHighByte(cpu);
+            cpu.CompleteInstruction();
+            break;
+        }
+    }
+
+}
+
+void instructions::branch::BranchOverflowSet(CPU& cpu, int step) {
+    switch (step) {
+        case 0: {
+            cpu.program_counter++;
+            if ((cpu.status & Flag::OVERFLOW) == 0) {
                 cpu.CompleteInstruction();
             }
             break;
