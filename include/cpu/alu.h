@@ -20,8 +20,8 @@ struct ALU {
     // Shift
     void ArithmeticShiftLeft(uint8_t operand);
     void LogicalShiftRight(uint8_t operand);
-    void RotateLeft(uint8_t operand);
-    void RotateRight(uint8_t operand);
+    void RotateLeft(uint8_t operand, bool carry);
+    void RotateRight(uint8_t operand, bool carry);
 
     uint8_t result;
     uint8_t status;
