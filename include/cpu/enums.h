@@ -13,7 +13,28 @@ enum class Flag : uint8_t {
 };
 
 enum class Instruction {
+    ADC_IMM = 0x69,
+    ADC_ZP = 0x65, ADC_ZP_X = 0x75,
+    ADC_ABS = 0x6D, ADC_ABS_X = 0x7D, ADC_ABS_Y = 0x79,
+    ADC_IND_X = 0x61, ADC_IND_Y = 0x71,
 
+    AND_IMM = 0x29,
+    AND_ZP = 0x25, AND_ZP_X = 0x35,
+    AND_ABS = 0x2D, AND_ABS_X = 0x3D, AND_ABS_Y = 0x39,
+    AND_IND_X = 0x21, AND_IND_Y = 0x31,
+
+    ASL_ACC = 0x0A,
+    ASL_ZP = 0x06, ASL_ZP_X = 0x16,
+    ASL_ABS = 0x0E, ASL_ABS_X = 0x1E,
+
+    BCC = 0x90, BCS = 0xB0,
+    BEQ = 0xF0, BNE = 0xD0,
+    BMI = 0x30, BPL = 0x10,
+    BVC = 0x50, BVS = 0x70,
+
+    // ...
+
+    LSR_ACC = 0x4A
 };
 
 enum class InstructionStep {
