@@ -33,6 +33,9 @@ constexpr uint8_t operator&(uint8_t lhs, Flag rhs) {
 constexpr uint8_t operator|(uint8_t lhs, Flag rhs) {
     return lhs | static_cast<uint8_t>(rhs);
 }
+constexpr uint8_t operator|(Flag lhs, Flag rhs) {
+    return static_cast<uint8_t>(lhs) | static_cast<uint8_t>(rhs);
+}
 constexpr uint8_t& operator|=(uint8_t& lhs, Flag rhs) {
     lhs |= static_cast<uint8_t>(rhs);
     return lhs;

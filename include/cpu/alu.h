@@ -15,13 +15,13 @@ struct ALU {
     void BIT(uint8_t lhs, uint8_t rhs);
 
     // Compare (obviously)
-    void Compare(uint8_t lhs, uint8_t rhs) {}
+    void Compare(uint8_t lhs, uint8_t rhs);
 
     // Shift
-    void ArithmeticShiftLeft(uint8_t operand) {}
-    void LogicalShiftRight(uint8_t operand) {}
-    void RotateLeft(uint8_t operand) {}
-    void RotateRight(uint8_t operand) {}
+    void ArithmeticShiftLeft(uint8_t operand);
+    void LogicalShiftRight(uint8_t operand);
+    void RotateLeft(uint8_t operand);
+    void RotateRight(uint8_t operand);
 
     uint8_t result;
     uint8_t status;
