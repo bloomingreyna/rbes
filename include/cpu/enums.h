@@ -34,7 +34,11 @@ enum class Instruction {
 
     // ...
 
-    LSR_ACC = 0x4A
+    LSR_ACC = 0x4A,
+
+    // ...
+    
+    ROL_ACC = -0x00, ROR_ACC = -0x00 // TODO: Replace with actual opcodes
 };
 
 enum class InstructionStep {

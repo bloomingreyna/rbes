@@ -1,7 +1,8 @@
 #include <cpu/cpu.h>
 #include <cpu/instructions.h>
 
-bool BranchPageCross(CPU& cpu) {
+// Branches the PC, then returns true if a page was crossed (low byte over/underflowed)
+bool BranchCheckPageCross(CPU& cpu) {
     uint8_t pc_low = cpu.program_counter & 0xFF;
     uint16_t result = pc_low + cpu.data_bus;
     cpu.program_counter &= 0xFF00;
@@ -37,7 +38,7 @@ void instructions::branch::BranchCarryClear(CPU& cpu, int step) {
             break;
         }
         case 1: {
-            if (!BranchPageCross(cpu)) {
+            if (!BranchCheckPageCross(cpu)) {
                 cpu.CompleteInstruction();
             }
             break;
@@ -60,7 +61,7 @@ void instructions::branch::BranchCarrySet(CPU& cpu, int step) {
             break;
         }
         case 1: {
-            if (!BranchPageCross(cpu)) {
+            if (!BranchCheckPageCross(cpu)) {
                 cpu.CompleteInstruction();
             }
             break;
@@ -83,7 +84,7 @@ void instructions::branch::BranchEqual(CPU& cpu, int step) {
             break;
         }
         case 1: {
-            if (!BranchPageCross(cpu)) {
+            if (!BranchCheckPageCross(cpu)) {
                 cpu.CompleteInstruction();
             }
             break;
@@ -107,7 +108,7 @@ void instructions::branch::BranchNotEqual(CPU& cpu, int step) {
             break;
         }
         case 1: {
-            if (!BranchPageCross(cpu)) {
+            if (!BranchCheckPageCross(cpu)) {
                 cpu.CompleteInstruction();
             }
             break;
@@ -131,7 +132,7 @@ void instructions::branch::BranchPositive(CPU& cpu, int step) {
             break;
         }
         case 1: {
-            if (!BranchPageCross(cpu)) {
+            if (!BranchCheckPageCross(cpu)) {
                 cpu.CompleteInstruction();
             }
             break;
@@ -155,7 +156,7 @@ void instructions::branch::BranchNegative(CPU& cpu, int step) {
             break;
         }
         case 1: {
-            if (!BranchPageCross(cpu)) {
+            if (!BranchCheckPageCross(cpu)) {
                 cpu.CompleteInstruction();
             }
             break;
@@ -179,7 +180,7 @@ void instructions::branch::BranchOverflowClear(CPU& cpu, int step) {
             break;
         }
         case 1: {
-            if (!BranchPageCross(cpu)) {
+            if (!BranchCheckPageCross(cpu)) {
                 cpu.CompleteInstruction();
             }
             break;
@@ -203,7 +204,7 @@ void instructions::branch::BranchOverflowSet(CPU& cpu, int step) {
             break;
         }
         case 1: {
-            if (!BranchPageCross(cpu)) {
+            if (!BranchCheckPageCross(cpu)) {
                 cpu.CompleteInstruction();
             }
             break;
