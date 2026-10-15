@@ -4,15 +4,15 @@
 
 struct ALU {
     // Arithmetic
-    void AddWithCarry(uint8_t lhs, uint8_t rhs, bool carry) {}
-    void Increment(uint8_t operand) {}
-    void Decrement(uint8_t operand) {}
+    void AddWithCarry(uint8_t lhs, uint8_t rhs, bool carry);
+    void Increment(uint8_t operand);
+    void Decrement(uint8_t operand);
 
     // Bitwise
-    void AND(uint8_t lhs, uint8_t rhs) {}
-    void OR(uint8_t lhs, uint8_t rhs) {}
-    void XOR(uint8_t lhs, uint8_t rhs) {}
-    void BIT(uint8_t lhs, uint8_t rhs) {}
+    void AND(uint8_t lhs, uint8_t rhs);
+    void OR(uint8_t lhs, uint8_t rhs);
+    void XOR(uint8_t lhs, uint8_t rhs);
+    void BIT(uint8_t lhs, uint8_t rhs);
 
     // Compare (obviously)
     void Compare(uint8_t lhs, uint8_t rhs) {}

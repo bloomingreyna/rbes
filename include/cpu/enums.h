@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 enum class Flag : uint8_t {
     CARRY = 0x01,
     ZERO = 0x02,
@@ -30,4 +32,8 @@ constexpr uint8_t operator&(uint8_t lhs, Flag rhs) {
 }
 constexpr uint8_t operator|(uint8_t lhs, Flag rhs) {
     return lhs | static_cast<uint8_t>(rhs);
+}
+constexpr uint8_t& operator|=(uint8_t& lhs, Flag rhs) {
+    lhs |= static_cast<uint8_t>(rhs);
+    return lhs;
 }

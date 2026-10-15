@@ -1,0 +1,116 @@
+[
+{
+  "directory": "C:/Users/justi/Documents/C++/Emulators/NES/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\c++.exe -IC:/Users/justi/Documents/C++/Emulators/NES/include -std=gnu++23 -o CMakeFiles\\rbes_emu.dir\\src\\cpu\\addressing_modes\\absolute.cpp.obj -c C:\\Users\\justi\\Documents\\C++\\Emulators\\NES\\src\\cpu\\addressing_modes\\absolute.cpp",
+  "file": "C:/Users/justi/Documents/C++/Emulators/NES/src/cpu/addressing_modes/absolute.cpp",
+  "output": "C:/Users/justi/Documents/C++/Emulators/NES/build/CMakeFiles/rbes_emu.dir/src/cpu/addressing_modes/absolute.cpp.obj"
+},
+{
+  "directory": "C:/Users/justi/Documents/C++/Emulators/NES/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\c++.exe -IC:/Users/justi/Documents/C++/Emulators/NES/include -std=gnu++23 -o CMakeFiles\\rbes_emu.dir\\src\\cpu\\addressing_modes\\immediate.cpp.obj -c C:\\Users\\justi\\Documents\\C++\\Emulators\\NES\\src\\cpu\\addressing_modes\\immediate.cpp",
+  "file": "C:/Users/justi/Documents/C++/Emulators/NES/src/cpu/addressing_modes/immediate.cpp",
+  "output": "C:/Users/justi/Documents/C++/Emulators/NES/build/CMakeFiles/rbes_emu.dir/src/cpu/addressing_modes/immediate.cpp.obj"
+},
+{
+  "directory": "C:/Users/justi/Documents/C++/Emulators/NES/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\c++.exe -IC:/Users/justi/Documents/C++/Emulators/NES/include -std=gnu++23 -o CMakeFiles\\rbes_emu.dir\\src\\cpu\\addressing_modes\\indirect.cpp.obj -c C:\\Users\\justi\\Documents\\C++\\Emulators\\NES\\src\\cpu\\addressing_modes\\indirect.cpp",
+  "file": "C:/Users/justi/Documents/C++/Emulators/NES/src/cpu/addressing_modes/indirect.cpp",
+  "output": "C:/Users/justi/Documents/C++/Emulators/NES/build/CMakeFiles/rbes_emu.dir/src/cpu/addressing_modes/indirect.cpp.obj"
+},
+{
+  "directory": "C:/Users/justi/Documents/C++/Emulators/NES/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\c++.exe -IC:/Users/justi/Documents/C++/Emulators/NES/include -std=gnu++23 -o CMakeFiles\\rbes_emu.dir\\src\\cpu\\addressing_modes\\zero_page.cpp.obj -c C:\\Users\\justi\\Documents\\C++\\Emulators\\NES\\src\\cpu\\addressing_modes\\zero_page.cpp",
+  "file": "C:/Users/justi/Documents/C++/Emulators/NES/src/cpu/addressing_modes/zero_page.cpp",
+  "output": "C:/Users/justi/Documents/C++/Emulators/NES/build/CMakeFiles/rbes_emu.dir/src/cpu/addressing_modes/zero_page.cpp.obj"
+},
+{
+  "directory": "C:/Users/justi/Documents/C++/Emulators/NES/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\c++.exe -IC:/Users/justi/Documents/C++/Emulators/NES/include -std=gnu++23 -o CMakeFiles\\rbes_emu.dir\\src\\cpu\\alu\\arithmetic.cpp.obj -c C:\\Users\\justi\\Documents\\C++\\Emulators\\NES\\src\\cpu\\alu\\arithmetic.cpp",
+  "file": "C:/Users/justi/Documents/C++/Emulators/NES/src/cpu/alu/arithmetic.cpp",
+  "output": "C:/Users/justi/Documents/C++/Emulators/NES/build/CMakeFiles/rbes_emu.dir/src/cpu/alu/arithmetic.cpp.obj"
+},
+{
+  "directory": "C:/Users/justi/Documents/C++/Emulators/NES/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\c++.exe -IC:/Users/justi/Documents/C++/Emulators/NES/include -std=gnu++23 -o CMakeFiles\\rbes_emu.dir\\src\\cpu\\constructor.cpp.obj -c C:\\Users\\justi\\Documents\\C++\\Emulators\\NES\\src\\cpu\\constructor.cpp",
+  "file": "C:/Users/justi/Documents/C++/Emulators/NES/src/cpu/constructor.cpp",
+  "output": "C:/Users/justi/Documents/C++/Emulators/NES/build/CMakeFiles/rbes_emu.dir/src/cpu/constructor.cpp.obj"
+},
+{
+  "directory": "C:/Users/justi/Documents/C++/Emulators/NES/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\c++.exe -IC:/Users/justi/Documents/C++/Emulators/NES/include -std=gnu++23 -o CMakeFiles\\rbes_emu.dir\\src\\cpu\\cycle.cpp.obj -c C:\\Users\\justi\\Documents\\C++\\Emulators\\NES\\src\\cpu\\cycle.cpp",
+  "file": "C:/Users/justi/Documents/C++/Emulators/NES/src/cpu/cycle.cpp",
+  "output": "C:/Users/justi/Documents/C++/Emulators/NES/build/CMakeFiles/rbes_emu.dir/src/cpu/cycle.cpp.obj"
+},
+{
+  "directory": "C:/Users/justi/Documents/C++/Emulators/NES/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\c++.exe -IC:/Users/justi/Documents/C++/Emulators/NES/include -std=gnu++23 -o CMakeFiles\\rbes_emu.dir\\src\\cpu\\instructions.cpp.obj -c C:\\Users\\justi\\Documents\\C++\\Emulators\\NES\\src\\cpu\\instructions.cpp",
+  "file": "C:/Users/justi/Documents/C++/Emulators/NES/src/cpu/instructions.cpp",
+  "output": "C:/Users/justi/Documents/C++/Emulators/NES/build/CMakeFiles/rbes_emu.dir/src/cpu/instructions.cpp.obj"
+},
+{
+  "directory": "C:/Users/justi/Documents/C++/Emulators/NES/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\c++.exe -IC:/Users/justi/Documents/C++/Emulators/NES/include -std=gnu++23 -o CMakeFiles\\rbes_emu.dir\\src\\cpu\\instructions\\access.cpp.obj -c C:\\Users\\justi\\Documents\\C++\\Emulators\\NES\\src\\cpu\\instructions\\access.cpp",
+  "file": "C:/Users/justi/Documents/C++/Emulators/NES/src/cpu/instructions/access.cpp",
+  "output": "C:/Users/justi/Documents/C++/Emulators/NES/build/CMakeFiles/rbes_emu.dir/src/cpu/instructions/access.cpp.obj"
+},
+{
+  "directory": "C:/Users/justi/Documents/C++/Emulators/NES/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\c++.exe -IC:/Users/justi/Documents/C++/Emulators/NES/include -std=gnu++23 -o CMakeFiles\\rbes_emu.dir\\src\\cpu\\instructions\\arithmetic.cpp.obj -c C:\\Users\\justi\\Documents\\C++\\Emulators\\NES\\src\\cpu\\instructions\\arithmetic.cpp",
+  "file": "C:/Users/justi/Documents/C++/Emulators/NES/src/cpu/instructions/arithmetic.cpp",
+  "output": "C:/Users/justi/Documents/C++/Emulators/NES/build/CMakeFiles/rbes_emu.dir/src/cpu/instructions/arithmetic.cpp.obj"
+},
+{
+  "directory": "C:/Users/justi/Documents/C++/Emulators/NES/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\c++.exe -IC:/Users/justi/Documents/C++/Emulators/NES/include -std=gnu++23 -o CMakeFiles\\rbes_emu.dir\\src\\cpu\\instructions\\bitwise.cpp.obj -c C:\\Users\\justi\\Documents\\C++\\Emulators\\NES\\src\\cpu\\instructions\\bitwise.cpp",
+  "file": "C:/Users/justi/Documents/C++/Emulators/NES/src/cpu/instructions/bitwise.cpp",
+  "output": "C:/Users/justi/Documents/C++/Emulators/NES/build/CMakeFiles/rbes_emu.dir/src/cpu/instructions/bitwise.cpp.obj"
+},
+{
+  "directory": "C:/Users/justi/Documents/C++/Emulators/NES/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\c++.exe -IC:/Users/justi/Documents/C++/Emulators/NES/include -std=gnu++23 -o CMakeFiles\\rbes_emu.dir\\src\\cpu\\instructions\\branch.cpp.obj -c C:\\Users\\justi\\Documents\\C++\\Emulators\\NES\\src\\cpu\\instructions\\branch.cpp",
+  "file": "C:/Users/justi/Documents/C++/Emulators/NES/src/cpu/instructions/branch.cpp",
+  "output": "C:/Users/justi/Documents/C++/Emulators/NES/build/CMakeFiles/rbes_emu.dir/src/cpu/instructions/branch.cpp.obj"
+},
+{
+  "directory": "C:/Users/justi/Documents/C++/Emulators/NES/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\c++.exe -IC:/Users/justi/Documents/C++/Emulators/NES/include -std=gnu++23 -o CMakeFiles\\rbes_emu.dir\\src\\cpu\\instructions\\compare.cpp.obj -c C:\\Users\\justi\\Documents\\C++\\Emulators\\NES\\src\\cpu\\instructions\\compare.cpp",
+  "file": "C:/Users/justi/Documents/C++/Emulators/NES/src/cpu/instructions/compare.cpp",
+  "output": "C:/Users/justi/Documents/C++/Emulators/NES/build/CMakeFiles/rbes_emu.dir/src/cpu/instructions/compare.cpp.obj"
+},
+{
+  "directory": "C:/Users/justi/Documents/C++/Emulators/NES/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\c++.exe -IC:/Users/justi/Documents/C++/Emulators/NES/include -std=gnu++23 -o CMakeFiles\\rbes_emu.dir\\src\\cpu\\instructions\\jump.cpp.obj -c C:\\Users\\justi\\Documents\\C++\\Emulators\\NES\\src\\cpu\\instructions\\jump.cpp",
+  "file": "C:/Users/justi/Documents/C++/Emulators/NES/src/cpu/instructions/jump.cpp",
+  "output": "C:/Users/justi/Documents/C++/Emulators/NES/build/CMakeFiles/rbes_emu.dir/src/cpu/instructions/jump.cpp.obj"
+},
+{
+  "directory": "C:/Users/justi/Documents/C++/Emulators/NES/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\c++.exe -IC:/Users/justi/Documents/C++/Emulators/NES/include -std=gnu++23 -o CMakeFiles\\rbes_emu.dir\\src\\cpu\\instructions\\shift.cpp.obj -c C:\\Users\\justi\\Documents\\C++\\Emulators\\NES\\src\\cpu\\instructions\\shift.cpp",
+  "file": "C:/Users/justi/Documents/C++/Emulators/NES/src/cpu/instructions/shift.cpp",
+  "output": "C:/Users/justi/Documents/C++/Emulators/NES/build/CMakeFiles/rbes_emu.dir/src/cpu/instructions/shift.cpp.obj"
+},
+{
+  "directory": "C:/Users/justi/Documents/C++/Emulators/NES/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\c++.exe -IC:/Users/justi/Documents/C++/Emulators/NES/include -std=gnu++23 -o CMakeFiles\\rbes_emu.dir\\src\\cpu\\instructions\\stack.cpp.obj -c C:\\Users\\justi\\Documents\\C++\\Emulators\\NES\\src\\cpu\\instructions\\stack.cpp",
+  "file": "C:/Users/justi/Documents/C++/Emulators/NES/src/cpu/instructions/stack.cpp",
+  "output": "C:/Users/justi/Documents/C++/Emulators/NES/build/CMakeFiles/rbes_emu.dir/src/cpu/instructions/stack.cpp.obj"
+},
+{
+  "directory": "C:/Users/justi/Documents/C++/Emulators/NES/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\c++.exe -IC:/Users/justi/Documents/C++/Emulators/NES/include -std=gnu++23 -o CMakeFiles\\rbes_emu.dir\\src\\cpu\\instructions\\transfer.cpp.obj -c C:\\Users\\justi\\Documents\\C++\\Emulators\\NES\\src\\cpu\\instructions\\transfer.cpp",
+  "file": "C:/Users/justi/Documents/C++/Emulators/NES/src/cpu/instructions/transfer.cpp",
+  "output": "C:/Users/justi/Documents/C++/Emulators/NES/build/CMakeFiles/rbes_emu.dir/src/cpu/instructions/transfer.cpp.obj"
+},
+{
+  "directory": "C:/Users/justi/Documents/C++/Emulators/NES/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\c++.exe -IC:/Users/justi/Documents/C++/Emulators/NES/include -std=gnu++23 -o CMakeFiles\\rbes_emu.dir\\src\\main.cpp.obj -c C:\\Users\\justi\\Documents\\C++\\Emulators\\NES\\src\\main.cpp",
+  "file": "C:/Users/justi/Documents/C++/Emulators/NES/src/main.cpp",
+  "output": "C:/Users/justi/Documents/C++/Emulators/NES/build/CMakeFiles/rbes_emu.dir/src/main.cpp.obj"
+},
+{
+  "directory": "C:/Users/justi/Documents/C++/Emulators/NES/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\c++.exe -IC:/Users/justi/Documents/C++/Emulators/NES/include -std=gnu++23 -o CMakeFiles\\rbes_emu.dir\\src\\memory\\memory.cpp.obj -c C:\\Users\\justi\\Documents\\C++\\Emulators\\NES\\src\\memory\\memory.cpp",
+  "file": "C:/Users/justi/Documents/C++/Emulators/NES/src/memory/memory.cpp",
+  "output": "C:/Users/justi/Documents/C++/Emulators/NES/build/CMakeFiles/rbes_emu.dir/src/memory/memory.cpp.obj"
+}
+]
