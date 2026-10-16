@@ -1,10 +1,10 @@
 #include <cpu/alu.h>
 #include <cpu/enums.h>
 
-constexpr uint8_t AND_CLEAR = ~(Flag::ZERO | Flag::NEGATIVE);
-constexpr uint8_t OR_CLEAR = ~(Flag::ZERO | Flag::NEGATIVE);
-constexpr uint8_t XOR_CLEAR = ~(Flag::ZERO | Flag::NEGATIVE);
-constexpr uint8_t BIT_CLEAR = ~(Flag::CARRY | Flag::OVERFLOW | Flag::NEGATIVE);
+constexpr uint8_t AND_CLEAR = static_cast<uint8_t>(~(Flag::ZERO | Flag::NEGATIVE));
+constexpr uint8_t OR_CLEAR = static_cast<uint8_t>(~(Flag::ZERO | Flag::NEGATIVE));
+constexpr uint8_t XOR_CLEAR = static_cast<uint8_t>(~(Flag::ZERO | Flag::NEGATIVE));
+constexpr uint8_t BIT_CLEAR = static_cast<uint8_t>(~(Flag::CARRY | Flag::OVERFLOW | Flag::NEGATIVE));
 
 void ALU::AND(uint8_t lhs, uint8_t rhs) {
     result = lhs & rhs;

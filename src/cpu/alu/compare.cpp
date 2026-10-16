@@ -1,7 +1,7 @@
 #include <cpu/alu.h>
 #include <cpu/enums.h>
 
-constexpr uint8_t CMP_CLEAR = ~(Flag::CARRY | Flag::ZERO | Flag::NEGATIVE);
+constexpr uint8_t CMP_CLEAR = static_cast<uint8_t>(~(Flag::CARRY | Flag::ZERO | Flag::NEGATIVE));
 
 void ALU::Compare(uint8_t lhs, uint8_t rhs) {
     result = lhs - rhs;

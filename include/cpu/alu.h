@@ -3,21 +3,18 @@
 #include <cstdint>
 
 struct ALU {
-    // Arithmetic
+    // SBC is implemented by bitwise NOT'ing the memory operand and calling ADC.
     void AddWithCarry(uint8_t lhs, uint8_t rhs, bool carry);
     void Increment(uint8_t operand);
     void Decrement(uint8_t operand);
 
-    // Bitwise
     void AND(uint8_t lhs, uint8_t rhs);
     void OR(uint8_t lhs, uint8_t rhs);
     void XOR(uint8_t lhs, uint8_t rhs);
     void BIT(uint8_t lhs, uint8_t rhs);
 
-    // Compare (obviously)
     void Compare(uint8_t lhs, uint8_t rhs);
 
-    // Shift
     void ArithmeticShiftLeft(uint8_t operand);
     void LogicalShiftRight(uint8_t operand);
     void RotateLeft(uint8_t operand, bool carry);

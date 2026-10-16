@@ -1,10 +1,10 @@
 #include <cpu/alu.h>
 #include <cpu/enums.h>
 
-constexpr uint8_t ASL_CLEAR = ~(Flag::CARRY | Flag::ZERO | Flag::NEGATIVE);
-constexpr uint8_t LSR_CLEAR = ~(Flag::CARRY | Flag::ZERO | Flag::NEGATIVE);
-constexpr uint8_t ROL_CLEAR = ~(Flag::CARRY | Flag::ZERO | Flag::NEGATIVE);
-constexpr uint8_t ROR_CLEAR = ~(Flag::CARRY | Flag::ZERO | Flag::NEGATIVE);
+constexpr uint8_t ASL_CLEAR = static_cast<uint8_t>(~(Flag::CARRY | Flag::ZERO | Flag::NEGATIVE));
+constexpr uint8_t LSR_CLEAR = static_cast<uint8_t>(~(Flag::CARRY | Flag::ZERO | Flag::NEGATIVE));
+constexpr uint8_t ROL_CLEAR = static_cast<uint8_t>(~(Flag::CARRY | Flag::ZERO | Flag::NEGATIVE));
+constexpr uint8_t ROR_CLEAR = static_cast<uint8_t>(~(Flag::CARRY | Flag::ZERO | Flag::NEGATIVE));
 
 void ALU::ArithmeticShiftLeft(uint8_t operand) {
     result = operand << 1;

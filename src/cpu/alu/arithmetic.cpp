@@ -1,9 +1,9 @@
 #include <cpu/alu.h>
 #include <cpu/enums.h>
 
-constexpr uint8_t ADC_CLEAR = ~(Flag::CARRY | Flag::ZERO | Flag::OVERFLOW | Flag::NEGATIVE);
-constexpr uint8_t INC_CLEAR = ~(Flag::ZERO | Flag::NEGATIVE);
-constexpr uint8_t DEC_CLEAR = ~(Flag::ZERO | Flag::NEGATIVE);
+constexpr uint8_t ADC_CLEAR = static_cast<uint8_t>(~(Flag::CARRY | Flag::ZERO | Flag::OVERFLOW | Flag::NEGATIVE));
+constexpr uint8_t INC_CLEAR = static_cast<uint8_t>(~(Flag::ZERO | Flag::NEGATIVE));
+constexpr uint8_t DEC_CLEAR = static_cast<uint8_t>(~(Flag::ZERO | Flag::NEGATIVE));
 
 void ALU::AddWithCarry(uint8_t lhs, uint8_t rhs, bool carry) {
     uint16_t add_result = lhs + rhs + carry;
@@ -17,7 +17,7 @@ void ALU::AddWithCarry(uint8_t lhs, uint8_t rhs, bool carry) {
     if ((add_result & 0xFF) == 0) {
         status |= Flag::ZERO;
     }
-    if (((add_result ^ lhs) & (add_result ^ lhs) & 0x80) != 0) {
+    if (((add_result ^ lhs) & (add_result ^ rhs) & 0x80) != 0) {
         status |= Flag::OVERFLOW;
     }
     if ((add_result & 0x80) != 0) {
