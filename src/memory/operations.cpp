@@ -1,8 +1,11 @@
+#include <filesystem>
+#include <windows.h>
+
 #include <memory/enums.h>
 #include <memory/memory.h>
 
 void Memory::LoadFile(const std::string& file_name) {
-    // ...
+    
 }
 
 uint8_t Memory::Read(uint16_t address) {
