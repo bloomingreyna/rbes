@@ -1,11 +1,38 @@
 #include <filesystem>
-#include <windows.h>
+#include <fstream>
+#include <iostream>
+#include <memory>
 
 #include <memory/enums.h>
 #include <memory/memory.h>
+#include <whereami.h>
 
 void Memory::LoadFile(const std::string& file_name) {
-    
+    int length = wai_getExecutablePath(nullptr, 0, nullptr);
+
+    std::unique_ptr<char[]> exe_path = std::make_unique<char[]>(length + 1);
+    int dir_name_length;
+
+    wai_getExecutablePath(exe_path.get(), length, &dir_name_length);
+
+    exe_path[dir_name_length + 1] = '\0';
+
+    std::string rom_path = exe_path.get();
+    rom_path += file_name;
+
+    std::uintmax_t file_size = std::filesystem::file_size(rom_path);
+    std::ifstream file(rom_path.c_str(), std::ios::binary);
+
+    std::unique_ptr<char[]> buffer = std::make_unique<char[]>(file_size);
+    file.read(buffer.get(), file_size);
+
+    size_t memory_start = static_cast<size_t>(AddressStart::CARTRIDGE);
+    size_t memory_end = static_cast<size_t>(AddressStart::CARTRIDGE);
+
+    for (size_t i = memory_start; i <= memory_end; ++i) {
+        size_t buffer_index = i - memory_start;
+        memory[i] = buffer[buffer_index];
+    }
 }
 
 uint8_t Memory::Read(uint16_t address) {
