@@ -2,6 +2,8 @@
 #include <string>
 #include <vector>
 
+constexpr size_t MEMORY_MAP_SIZE = 0x10000; // 64 KB
+
 constexpr uint16_t INTERNAL_RAM_START = 0x0000;
 constexpr uint16_t INTERNAL_RAM_END = 0x1FFF;
 
