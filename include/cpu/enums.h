@@ -71,7 +71,7 @@ enum class Instruction {
     LDA_ABS = 0xAD, LDA_ABS_X = 0xBD, LDA_ABS_Y = 0xB9,
     LDA_IND_X = 0xA1, LDA_IND_Y = 0xB1,
 
-    LDX = 0xA2,
+    LDX_IMM = 0xA2,
     LDX_ZP = 0xA6, LDX_ZP_Y = 0xB6,
     LDX_ABS = 0xAE, LDX_ABS_Y = 0xBE,
 
@@ -120,7 +120,12 @@ enum class Instruction {
 
     TAX = 0xAA, TAY = 0xA8,
     TXA = 0x8A, TYA = 0x98,
-    TSX = 0xBA, TXS = 0x9A
+    TSX = 0xBA, TXS = 0x9A,
+
+    XOR_IMM = 0x49,
+    XOR_ZP = 0x45, XOR_ZP_X = 0x55,
+    XOR_ABS = 0x4D, XOR_ABS_X = 0x5D, XOR_ABS_Y = 0x59,
+    XOR_IND_X = 0x41, XOR_IND_Y = 0x51
 };
 
 enum class InstructionStep {

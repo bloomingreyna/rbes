@@ -10,7 +10,8 @@ class Memory;
 
 class CPU {
 public:
-    CPU();
+    void InitializeAddressingModes();
+    void InitializeInstructions();
 
     void ExecutionLogic();
 

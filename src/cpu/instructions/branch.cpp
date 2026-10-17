@@ -78,7 +78,7 @@ void instructions::branch::BranchEqual(CPU& cpu, int step) {
     switch (step) {
         case 0: {
             cpu.program_counter++;
-            if ((cpu.status & Flag::ZERO) != 0) {
+            if ((cpu.status & Flag::ZERO) == 0) {
                 cpu.CompleteInstruction();
             }
             break;
@@ -102,7 +102,7 @@ void instructions::branch::BranchNotEqual(CPU& cpu, int step) {
     switch (step) {
         case 0: {
             cpu.program_counter++;
-            if ((cpu.status & Flag::ZERO) == 0) {
+            if ((cpu.status & Flag::ZERO) != 0) {
                 cpu.CompleteInstruction();
             }
             break;

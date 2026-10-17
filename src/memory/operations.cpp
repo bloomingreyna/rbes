@@ -1,6 +1,5 @@
 #include <filesystem>
 #include <fstream>
-#include <iostream>
 #include <memory>
 
 #include <memory/enums.h>
@@ -26,11 +25,11 @@ void Memory::LoadFile(const std::string& file_name) {
     std::unique_ptr<char[]> buffer = std::make_unique<char[]>(file_size);
     file.read(buffer.get(), file_size);
 
-    size_t memory_start = static_cast<size_t>(AddressStart::CARTRIDGE);
-    size_t memory_end = static_cast<size_t>(AddressStart::CARTRIDGE);
+    size_t cartridge_start = static_cast<size_t>(AddressStart::CARTRIDGE);
+    size_t cartridge_end = static_cast<size_t>(AddressStart::CARTRIDGE);
 
-    for (size_t i = memory_start; i <= memory_end; ++i) {
-        size_t buffer_index = i - memory_start;
+    for (size_t i = cartridge_start; i <= cartridge_end; ++i) {
+        size_t buffer_index = i - cartridge_start;
         memory[i] = buffer[buffer_index];
     }
 }
