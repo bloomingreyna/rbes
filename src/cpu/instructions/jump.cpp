@@ -139,9 +139,6 @@ void instructions::jump::Break(CPU& cpu, int step) {
         case 5: {
             cpu.status |= Flag::INTERRUPT_DISABLE;
 
-            cpu.latch_register = cpu.data_bus;
-            cpu.address_bus = 0xFFFF;
-
             InterruptVector vec = cpu.nmi_interrupt ? InterruptVector::NMI : InterruptVector::IRQ;
             cpu.program_counter &= 0xFF;
             cpu.program_counter |= cpu.memory->FetchInterruptVector(vec, InterruptVectorByte::HIGH) << 8;

@@ -23,6 +23,7 @@ public:
     void HardwareInterrupt();
 
     void CompleteAddressingMode();
+    void PollInterrupts();
     void CompleteInstruction();
 
     /* ----|----|---- */

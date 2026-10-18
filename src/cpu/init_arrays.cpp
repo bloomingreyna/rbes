@@ -1,13 +1,111 @@
 #include <unordered_map>
 #include <vector>
 
+#include <cpu/addressing_modes.h>
 #include <cpu/cpu.h>
 #include <cpu/enums.h>
 #include <cpu/instructions.h>
 
+#define Implied nullptr
+
+using enum Instruction;
+
+void CPU::InitializeAddressingModes() {
+    using namespace addressing_modes;
+
+    std::unordered_map<void(*)(CPU&, int), std::vector<Instruction>> instruction_map = {
+        {Implied, {
+            BRK, // While BRK is technically a two-byte instruction, it is being reused for hardware interrupts. The implementation is set up to increment the program counter a second time when the instruction is called via a software interrupt.
+            CLC, SEC, CLD, SED, CLI, SEI, CLV,
+            INX, INY, DEX, DEY,
+            NOP,
+            PHA, PLA, PHP, PLP,
+            RTS, RTI,
+            TAX, TAY, TXA, TYA, TXS, TSX,
+            ASL_ACC, LSR_ACC, ROL_ACC, ROR_ACC // Listed as accumulator on nesdev, though functionally equivalent to implied
+        }},
+        {Immediate, {
+            LDA_IMM, LDX_IMM, LDY_IMM,
+            ADC_IMM, SBC_IMM,
+            AND_IMM, ORA_IMM, XOR_IMM,
+            CMP_IMM, CPX_IMM, CPY_IMM,
+            BCC, BCS, BEQ, BNE, BPL, BMI, BVC, BVS // Listed as relative on nesdev, though functionally equivalent to immediate
+        }},
+        {ZeroPage, {
+            LDA_ZP, LDX_ZP, LDY_ZP,
+            STA_ZP, STX_ZP, STY_ZP,
+            ADC_ZP, SBC_ZP,
+            INC_ZP, DEC_ZP,
+            ASL_ZP, LSR_ZP, ROL_ZP, ROR_ZP,
+            AND_ZP, ORA_ZP, XOR_ZP, BIT_ZP,
+            CMP_ZP, CPX_ZP, CPY_ZP,
+        }},
+        {ZeroPageX, {
+            LDA_ZP_X, LDY_ZP_X,
+            STA_ZP_X, STY_ZP_X,
+            ADC_ZP_X, SBC_ZP_X,
+            INC_ZP_X, DEC_ZP_X,
+            ASL_ZP_X, LSR_ZP_X, ROL_ZP_X, ROR_ZP_X,
+            AND_ZP_X, ORA_ZP_X, XOR_ZP_X,
+            CMP_ZP_X
+        }},
+        {ZeroPageY, {
+            LDX_ZP_Y, STX_ZP_Y
+        }},
+        {Absolute, {
+            LDA_ABS, LDX_ABS, LDY_ABS,
+            STA_ABS, STX_ABS, STY_ABS,
+            ADC_ABS, SBC_ABS,
+            INC_ABS, DEC_ABS,
+            ASL_ABS, LSR_ABS, ROL_ABS, ROR_ABS,
+            AND_ABS, ORA_ABS, XOR_ABS, BIT_ABS,
+            CMP_ABS, CPX_ABS, CPY_ABS,
+            JMP_ABS
+        }},
+        {AbsoluteX, {
+            LDA_ABS_X, LDY_ABS_X,
+            STA_ABS_X,
+            ADC_ABS_X, SBC_ABS_X,
+            INC_ABS_X, DEC_ABS_X,
+            ASL_ABS_X, LSR_ABS_X, ROL_ABS_X, ROR_ABS_X,
+            AND_ABS_X, ORA_ABS_Y, XOR_ABS_Y,
+            CMP_ABS_X
+        }},
+        {AbsoluteY, {
+            LDA_ABS_Y, LDX_ABS_Y,
+            STA_ABS_Y,
+            ADC_ABS_Y, SBC_ABS_Y,
+            AND_ABS_Y, ORA_ABS_Y, XOR_ABS_Y,
+            CMP_ABS_Y
+        }},
+        {Indirect, {
+            JMP_IND
+        }},
+        {IndirectX, {
+            LDA_IND_X,
+            STA_IND_X,
+            ADC_IND_X, SBC_IND_X,
+            AND_IND_X, ORA_IND_X, XOR_IND_X,
+            CMP_IND_X
+        }},
+        {IndirectY, {
+            LDA_IND_Y,
+            STA_IND_Y,
+            ADC_IND_Y, SBC_IND_Y,
+            AND_IND_Y, ORA_IND_Y, XOR_IND_Y,
+            CMP_IND_Y
+        }}
+    };
+
+    for (auto& [func_ptr, indices] : instruction_map) {
+        for (auto inst : indices) {
+            addressing_mode_array[static_cast<size_t>(inst)] = func_ptr;
+        }
+    }
+}
+
 void CPU::InitializeInstructions() {
     using namespace instructions;
-    using enum Instruction;
 
     std::unordered_map<void(*)(CPU&, int), std::vector<Instruction>> instruction_map = {
         {access::LoadAccumulator, {LDA_IMM, LDA_ZP, LDA_ZP_X, LDA_ABS, LDA_ABS_X, LDA_ABS_Y, LDA_IND_X, LDA_IND_Y}},
@@ -67,7 +165,15 @@ void CPU::InitializeInstructions() {
         {stack::TransferXtoStack, {TXS}},
         {stack::TransferStackToX, {TSX}},
 
-        {flags::ClearCarry, {}}
+        {flags::ClearCarry, {CLC}},
+        {flags::SetCarry, {SEC}},
+        {flags::ClearDecimal, {CLD}},
+        {flags::SetDecimal, {SED}},
+        {flags::ClearInterruptDisable, {CLI}},
+        {flags::SetInterruptDisable, {SEI}},
+        {flags::ClearOverflow, {CLV}},
+
+        {other::NOP, {NOP}}
     };
 
     for (auto& [func_ptr, indices] : instruction_map) {

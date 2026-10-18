@@ -7,6 +7,8 @@ void CPU::FetchInstruction() {
     if (interrupt_poll) {
         instruction = Instruction::BRK;
         hardware_interrupt = true;
+
+        interrupt_poll = false;
     } else {
         instruction = static_cast<Instruction>(data_bus);
         address_bus = program_counter;
@@ -16,7 +18,8 @@ void CPU::FetchInstruction() {
         allow_irq = interrupt_delay_value;
     }
 
-    if (true) { // TODO: True for everything other than implied
+    uint8_t opcode = static_cast<uint8_t>(instruction);
+    if (addressing_mode_array[opcode] != nullptr) {
         inst_step = InstructionStep::CALCULATE_ADDRESS;
     } else {
         inst_step = InstructionStep::EXECUTE;
@@ -36,6 +39,12 @@ void CPU::ExecuteInstruction() {
 void CPU::CompleteAddressingMode() {
     cycle_step = 0;
     inst_step = InstructionStep::EXECUTE;
+}
+
+void CPU::PollInterrupts() {
+    if ((allow_irq && irq_interrupt) || nmi_interrupt) {
+        interrupt_poll = true;
+    }
 }
 
 void CPU::CompleteInstruction() {
