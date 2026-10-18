@@ -9,12 +9,17 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin/)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS
-    "src/*.cpp", "src/*.c",
+    "src/*.cpp" "src/*.c"
     "include/*.h"
+)
+
+file(GLOB_RECURSE LIB_FILES CONFIGURE_DEPENDS
+    "lib/*.a"
 )
 
 add_executable(rbes_emu ${SRC_FILES})
 target_include_directories(rbes_emu PRIVATE include/)
+target_link_libraries(rbes_emu PRIVATE ${LIB_FILES})
 
 add_custom_command(TARGET rbes_emu PRE_BUILD
     COMMAND ${CMAKE_COMMAND} -E make_directory bin/roms

@@ -14,4 +14,5 @@ RBES (pronounced like the shittiest fast food chain of all time, Arby's) is my a
 The main emulation logic is written entirely in C++. External libraries (listed below) are written in either C++ or C.
 
 ### Libraries:
+* [glfw](https://github.com/glfw/glfw)
 * [whereami](https://github.com/gpakosz/whereami/tree/master)
