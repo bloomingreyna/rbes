@@ -55,7 +55,7 @@ void CPU::InitializeInstructions() {
         {branch::BranchOverflowSet, {BVS}},
 
         {jump::Jump, {JMP_ABS, JMP_IND}},
-        {jump::JumpToSubroutine, {JSR_ABS}},
+        {jump::JumpToSubroutine, {JSR}},
         {jump::ReturnFromSubroutine, {RTS}},
         {jump::ReturnFromInterrupt, {RTI}},
         {jump::Break, {BRK}},

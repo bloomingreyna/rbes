@@ -50,3 +50,11 @@ uint8_t Memory::Read(uint16_t address) {
 void Memory::Write(uint16_t address, uint8_t value) {
     memory[address] = value;
 }
+
+uint8_t Memory::FetchInterruptVector(InterruptVector vec, InterruptVectorByte byte) {
+    return memory[static_cast<size_t>(vec) + static_cast<size_t>(byte)];
+}
+
+uint8_t Memory::DirectAccess(uint16_t address) {
+    return memory[address];
+}

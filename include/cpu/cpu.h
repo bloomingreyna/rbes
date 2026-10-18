@@ -42,6 +42,7 @@ public:
     uint8_t data_bus;
 
     uint8_t latch_register;
+    uint8_t second_latch;
     uint16_t pc_latch;
     bool pc_jump = false;
 

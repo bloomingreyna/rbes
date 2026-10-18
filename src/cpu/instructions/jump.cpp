@@ -1,5 +1,7 @@
 #include <cpu/cpu.h>
 #include <cpu/instructions.h>
+#include <memory/memory.h>
+#include <memory/enums.h>
 
 void instructions::jump::Jump(CPU& cpu, int step) {
     cpu.program_counter = cpu.data_bus;
@@ -8,23 +10,28 @@ void instructions::jump::Jump(CPU& cpu, int step) {
 
 void instructions::jump::JumpToSubroutine(CPU&cpu, int step) {
     switch (step) {
-        // TODO: The high byte fetch is delegated to the last cycle.
-        case 1: {
+        case 0: {
+            cpu.latch_register = cpu.data_bus;
+            break;
+        }
+        case 1: { break; }
+        case 2: {
             cpu.rw_line = RWline::WRITE;
 
-            cpu.latch_register = cpu.data_bus;
             cpu.data_bus = cpu.program_counter >> 8;
             cpu.address_bus = 0x0100 + cpu.stack_pointer--;
             break;
         }
-        case 2: {
+        case 3: {
             cpu.data_bus = cpu.program_counter & 0xFF;
             cpu.address_bus = 0x0100 + cpu.stack_pointer--;
             break;
         }
-        case 3: {
+        case 4: {
             cpu.rw_line = RWline::READ;
-            cpu.program_counter = cpu.latch_register;
+
+            cpu.second_latch = cpu.memory->DirectAccess(++cpu.program_counter);
+            cpu.program_counter = (cpu.second_latch << 8) | cpu.latch_register;
 
             cpu.CompleteInstruction();
             break;
@@ -92,6 +99,7 @@ void instructions::jump::ReturnFromInterrupt(CPU& cpu, int step) {
     }
 }
 
+// No, FetchInterruptVector doesn't count as a fucking memory access and you can't convince me otherwise
 void instructions::jump::Break(CPU& cpu, int step) {
     switch (step) {
         case 0: { break; }
@@ -122,13 +130,21 @@ void instructions::jump::Break(CPU& cpu, int step) {
         case 4: {
             cpu.rw_line = RWline::READ;
             cpu.address_bus = 0xFFFE;
+
+            InterruptVector vec = cpu.nmi_interrupt ? InterruptVector::NMI : InterruptVector::IRQ;
+            cpu.program_counter &= 0xFF00;
+            cpu.program_counter = cpu.memory->FetchInterruptVector(vec, InterruptVectorByte::LOW);
             break;
         }
-        case 5: { // TODO: Figure out program counter change
+        case 5: {
             cpu.status |= Flag::INTERRUPT_DISABLE;
 
             cpu.latch_register = cpu.data_bus;
             cpu.address_bus = 0xFFFF;
+
+            InterruptVector vec = cpu.nmi_interrupt ? InterruptVector::NMI : InterruptVector::IRQ;
+            cpu.program_counter &= 0xFF;
+            cpu.program_counter |= cpu.memory->FetchInterruptVector(vec, InterruptVectorByte::HIGH) << 8;
 
             cpu.hardware_interrupt = false;
             cpu.CompleteInstruction();

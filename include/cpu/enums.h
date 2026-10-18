@@ -64,7 +64,7 @@ enum class Instruction {
     JMP_ABS = 0x4C,
     JMP_IND = 0x6C,
 
-    JSR_ABS = 0x20,
+    JSR = 0x20,
 
     LDA_IMM = 0xA9,
     LDA_ZP = 0xA5, LDA_ZP_X = 0xB5,

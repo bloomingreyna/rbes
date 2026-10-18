@@ -1,3 +1,5 @@
+#pragma once
+
 #include <cstdint>
 
 #define ComparisonOverload(enum_) \
@@ -27,6 +29,15 @@ enum class AddressEnd : uint16_t {
 enum class MirrorModulo {
     INTERNAL_RAM = 0x0800,
     PPU_REGISTERS = 0x0008
+};
+
+enum class InterruptVector {
+    IRQ = 0xFFFE,
+    NMI = 0xFFFA
+};
+
+enum class InterruptVectorByte {
+    LOW, HIGH
 };
 
 ComparisonOverload(AddressStart)
