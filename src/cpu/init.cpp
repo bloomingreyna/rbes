@@ -1,3 +1,4 @@
+#include <iostream>
 #include <unordered_map>
 #include <vector>
 
@@ -5,10 +6,28 @@
 #include <cpu/cpu.h>
 #include <cpu/enums.h>
 #include <cpu/instructions.h>
+#include <memory/memory.h>
 
 #define Implied nullptr
 
 using enum Instruction;
+
+CPU::CPU(Memory* mem) : memory(mem) {
+    InitializeAddressingModes();
+    InitializeInstructions();
+}
+
+void CPU::Initialize() {
+    switch (cycle_step++) {
+        case 0: {}
+        case 1: {}
+        case 2: {}
+        case 3: {}
+        case 4: {}
+        case 5: {}
+        case 6: {}
+    }
+}
 
 void CPU::InitializeAddressingModes() {
     using namespace addressing_modes;
@@ -16,6 +35,7 @@ void CPU::InitializeAddressingModes() {
     std::unordered_map<void(*)(CPU&, int), std::vector<Instruction>> instruction_map = {
         {Implied, {
             BRK, // While BRK is technically a two-byte instruction, it is being reused for hardware interrupts. The implementation is set up to increment the program counter a second time when the instruction is called via a software interrupt.
+            JSR, // Listed as absolute on nesdev, but has special behavior that makes it easier to implement via implied addressing mode
             CLC, SEC, CLD, SED, CLI, SEI, CLV,
             INX, INY, DEX, DEY,
             NOP,

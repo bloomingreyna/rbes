@@ -15,3 +15,7 @@ file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS
 
 add_executable(rbes_emu ${SRC_FILES})
 target_include_directories(rbes_emu PRIVATE include/)
+
+add_custom_command(TARGET rbes_emu PRE_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory bin/roms
+)

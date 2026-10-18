@@ -17,13 +17,13 @@ void Memory::LoadFile(const std::string& file_name) {
     exe_path[dir_name_length + 1] = '\0';
 
     std::string rom_path = exe_path.get();
-    rom_path += file_name;
+    rom_path += "roms\\" + file_name;
 
     std::uintmax_t file_size = std::filesystem::file_size(rom_path);
     std::ifstream file(rom_path.c_str(), std::ios::binary);
 
-    std::unique_ptr<char[]> buffer = std::make_unique<char[]>(file_size);
-    file.read(buffer.get(), file_size);
+    std::vector<char> buffer(file_size);
+    file.read(buffer.data(), file_size);
 
     size_t cartridge_start = static_cast<size_t>(AddressStart::CARTRIDGE);
     size_t cartridge_end = static_cast<size_t>(AddressStart::CARTRIDGE);
@@ -48,7 +48,16 @@ uint8_t Memory::Read(uint16_t address) {
 }
 
 void Memory::Write(uint16_t address, uint8_t value) {
-    memory[address] = value;
+    uint16_t effective_address;
+    if (address >= AddressStart::INTERNAL_RAM && address <= AddressEnd::INTERNAL_RAM) {
+        effective_address = address % static_cast<uint16_t>(MirrorModulo::INTERNAL_RAM);
+    } else if (address >= AddressStart::PPU_REGISTERS && address <= AddressEnd::PPU_REGISTERS) {
+        effective_address = address % static_cast<uint16_t>(MirrorModulo::PPU_REGISTERS);
+    } else {
+        effective_address = address;
+    }
+
+    memory[effective_address] = value;
 }
 
 uint8_t Memory::FetchInterruptVector(InterruptVector vec, InterruptVectorByte byte) {

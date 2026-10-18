@@ -11,6 +11,10 @@ class Memory;
 
 class CPU {
 public:
+    CPU(Memory* mem);
+
+    void Initialize();
+
     void InitializeAddressingModes();
     void InitializeInstructions();
 
@@ -37,7 +41,7 @@ public:
     std::array<void(*)(CPU&, int), 256> instruction_array;
 
     Instruction instruction;
-    InstructionStep inst_step = InstructionStep::FETCH;
+    InstructionStep inst_step = InstructionStep::INITIALIZE;
 
     uint16_t address_bus;
     uint8_t data_bus;

@@ -102,13 +102,14 @@ void instructions::jump::ReturnFromInterrupt(CPU& cpu, int step) {
 // No, FetchInterruptVector doesn't count as a fucking memory access and you can't convince me otherwise
 void instructions::jump::Break(CPU& cpu, int step) {
     switch (step) {
-        case 0: { break; }
-        case 1: {
-            cpu.rw_line = RWline::WRITE;
-
+        case 0: {
             if (!cpu.hardware_interrupt) {
                 cpu.program_counter++; // BRK weirdness
             }
+            break;
+        }
+        case 1: {
+            cpu.rw_line = RWline::WRITE;
 
             cpu.data_bus = cpu.program_counter >> 8;
             cpu.address_bus = 0x0100 + cpu.stack_pointer--;

@@ -1,5 +1,6 @@
 #include <cpu/addressing_modes.h>
 #include <cpu/cpu.h>
+#include <cpu/instructions.h>
 
 void addressing_modes::Indirect(CPU& cpu, int step) {
     switch (step) {
@@ -16,9 +17,7 @@ void addressing_modes::Indirect(CPU& cpu, int step) {
         case 2: {
             cpu.latch_register = cpu.data_bus;
 
-            // Due to a bug in the original CPU, incrementing the pointer address to
-            // retrieve the high byte of the target address does not properly cross 
-            // pages. The below code intentionally implements this bug.
+            // Due to a bug in the original CPU, incrementing the pointer address to retrieve the high byte of the target address does not properly cross pages. The below code intentionally implements this bug.
 
             uint8_t ptr_low_byte = cpu.address_bus & 0xFF;
             ptr_low_byte++;
@@ -29,8 +28,8 @@ void addressing_modes::Indirect(CPU& cpu, int step) {
         }
         case 3: {
             cpu.address_bus = (cpu.data_bus << 8) | cpu.latch_register;
-            
             cpu.CompleteAddressingMode();
+            cpu.ExecuteInstruction();
             break;
         }
     }
@@ -80,11 +79,10 @@ void addressing_modes::IndirectY(CPU& cpu, int step) {
             cpu.alu.AddWithCarry(cpu.latch_register, cpu.y_index, false);
             cpu.address_bus = (cpu.data_bus << 8) | cpu.alu.result;
 
-            // TODO: Always "oops" for store instructions
-            if ((cpu.alu.status & Flag::CARRY) == 0) {
+            auto inst_func = cpu.instruction_array[static_cast<size_t>(cpu.instruction)];
+            if (inst_func == instructions::access::StoreAccumulator || (cpu.alu.status & Flag::CARRY) == 0) {
                 cpu.CompleteAddressingMode();
             }
-            break;
         }
         case 3: {
             if ((cpu.alu.status & Flag::CARRY) == 0) {

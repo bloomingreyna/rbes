@@ -129,7 +129,7 @@ enum class Instruction {
 };
 
 enum class InstructionStep {
-    FETCH, CALCULATE_ADDRESS, EXECUTE
+    INITIALIZE, FETCH, CALCULATE_ADDRESS, EXECUTE
 };
 
 /* On a real 6502, the R/W line is pulled high for a read, and low for a write.

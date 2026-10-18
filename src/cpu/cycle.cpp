@@ -3,6 +3,10 @@
 
 void CPU::ExecutionLogic() {
     switch (inst_step) {
+        case InstructionStep::INITIALIZE: {
+            Initialize();
+            break;
+        }
         case InstructionStep::FETCH: {
             FetchInstruction();
             break;
