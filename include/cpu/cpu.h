@@ -46,8 +46,8 @@ public:
     uint16_t pc_latch;
     bool pc_jump = false;
 
-    bool interrupt_delay_signal = false;
-    bool interrupt_delay_value;
+    bool interrupt_delay_signal = false; // Allows for flag and pull instructions to delay flag effect.
+    bool interrupt_delay_value; // Determines value of allow_irq when interrupt_delay_signal is true.
 
     bool allow_irq = false;
     bool irq_interrupt = false;

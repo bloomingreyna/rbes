@@ -1,12 +1,12 @@
 #include <cpu/cpu.h>
 #include <cpu/instructions.h>
 
-void ClearCarry(CPU& cpu, int step) {
+void instructions::flags::ClearCarry(CPU& cpu, int step) {
     cpu.status &= ~Flag::CARRY;
     cpu.CompleteInstruction();
 }
 
-void ClearInterruptDisable(CPU& cpu, int step) {
+void instructions::flags::ClearInterruptDisable(CPU& cpu, int step) {
     cpu.status &= ~Flag::INTERRUPT_DISABLE;
     cpu.interrupt_delay_signal = true;
     cpu.interrupt_delay_value = true;
@@ -14,22 +14,22 @@ void ClearInterruptDisable(CPU& cpu, int step) {
     cpu.CompleteInstruction();
 }
 
-void ClearDecimal(CPU& cpu, int step) {
+void instructions::flags::ClearDecimal(CPU& cpu, int step) {
     cpu.status &= ~Flag::DECIMAL;
     cpu.CompleteInstruction();
 }
 
-void ClearOverflow(CPU& cpu, int step) {
+void instructions::flags::ClearOverflow(CPU& cpu, int step) {
     cpu.status &= ~Flag::OVERFLOW;
     cpu.CompleteInstruction();
 }
 
-void SetCarry(CPU& cpu, int step) {
+void instructions::flags::SetCarry(CPU& cpu, int step) {
     cpu.status |= Flag::CARRY;
     cpu.CompleteInstruction();
 }
 
-void SetInterruptDisable(CPU& cpu, int step) {
+void instructions::flags::SetInterruptDisable(CPU& cpu, int step) {
     cpu.status |= Flag::INTERRUPT_DISABLE;
     cpu.interrupt_delay_signal = true;
     cpu.interrupt_delay_value = false;
@@ -37,7 +37,7 @@ void SetInterruptDisable(CPU& cpu, int step) {
     cpu.CompleteInstruction();
 }
 
-void SetDecimal(CPU& cpu, int step) {
+void instructions::flags::SetDecimal(CPU& cpu, int step) {
     cpu.status |= Flag::DECIMAL;
     cpu.CompleteInstruction();
 }
