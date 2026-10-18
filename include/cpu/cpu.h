@@ -2,6 +2,7 @@
 
 #include <array>
 #include <cstdint>
+#include <vector>
 
 #include <cpu/alu.h>
 #include <cpu/enums.h>
@@ -18,6 +19,8 @@ public:
     void FetchInstruction();
     void CalculateAddress();
     void ExecuteInstruction();
+
+    void HardwareInterrupt();
 
     void CompleteAddressingMode();
     void CompleteInstruction();
@@ -39,9 +42,17 @@ public:
     uint8_t data_bus;
 
     uint8_t latch_register;
+    uint16_t pc_latch;
+    bool pc_jump = false;
 
+    bool interrupt_delay_signal = false;
+    bool interrupt_delay_value;
+
+    bool allow_irq = false;
     bool irq_interrupt = false;
     bool nmi_interrupt = false; // Ignores I flag on status register
+    bool hardware_interrupt = false; // Determines behaviors in BRK instruction
+    bool interrupt_poll = false;
 
     RWline rw_line = RWline::READ;
 

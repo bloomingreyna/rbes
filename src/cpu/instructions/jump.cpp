@@ -8,7 +8,8 @@ void instructions::jump::Jump(CPU& cpu, int step) {
 
 void instructions::jump::JumpToSubroutine(CPU&cpu, int step) {
     switch (step) {
-        case 0: {
+        // TODO: The high byte fetch is delegated to the last cycle.
+        case 1: {
             cpu.rw_line = RWline::WRITE;
 
             cpu.latch_register = cpu.data_bus;
@@ -16,12 +17,12 @@ void instructions::jump::JumpToSubroutine(CPU&cpu, int step) {
             cpu.address_bus = 0x0100 + cpu.stack_pointer--;
             break;
         }
-        case 1: {
+        case 2: {
             cpu.data_bus = cpu.program_counter & 0xFF;
             cpu.address_bus = 0x0100 + cpu.stack_pointer--;
             break;
         }
-        case 2: {
+        case 3: {
             cpu.rw_line = RWline::READ;
             cpu.program_counter = cpu.latch_register;
 
@@ -69,7 +70,7 @@ void instructions::jump::ReturnFromInterrupt(CPU& cpu, int step) {
             cpu.status &= 0b00110000;
             cpu.status |= cpu.data_bus & 0b11001111;
 
-            cpu.irq_interrupt = (cpu.status & Flag::INTERRUPT_DISABLE) == 0;
+            cpu.allow_irq = !static_cast<bool>(cpu.status & Flag::INTERRUPT_DISABLE);
 
             cpu.address_bus = 0x0100 + ++cpu.stack_pointer;
             break;
@@ -93,15 +94,13 @@ void instructions::jump::ReturnFromInterrupt(CPU& cpu, int step) {
 
 void instructions::jump::Break(CPU& cpu, int step) {
     switch (step) {
-        case 0: {
+        case 0: { break; }
+        case 1: {
             cpu.rw_line = RWline::WRITE;
 
-            cpu.data_bus = cpu.status | 0b00110000;
-            cpu.address_bus = 0x0100 + cpu.stack_pointer--;
-            break;
-        }
-        case 1: {
-            cpu.program_counter++; // BRK weirdness
+            if (!cpu.hardware_interrupt) {
+                cpu.program_counter++; // BRK weirdness
+            }
 
             cpu.data_bus = cpu.program_counter >> 8;
             cpu.address_bus = 0x0100 + cpu.stack_pointer--;
@@ -113,17 +112,25 @@ void instructions::jump::Break(CPU& cpu, int step) {
             break;
         }
         case 3: {
+            cpu.data_bus = cpu.status | 0b00100000;
+            if (!cpu.hardware_interrupt) {
+                cpu.data_bus |= Flag::BREAK;
+            }
+            cpu.address_bus = 0x0100 + cpu.stack_pointer--;
+            break;
+        }
+        case 4: {
             cpu.rw_line = RWline::READ;
             cpu.address_bus = 0xFFFE;
             break;
         }
-        case 4: {
+        case 5: { // TODO: Figure out program counter change
+            cpu.status |= Flag::INTERRUPT_DISABLE;
+
             cpu.latch_register = cpu.data_bus;
             cpu.address_bus = 0xFFFF;
-            break;
-        }
-        case 5: {
-            cpu.program_counter = (cpu.data_bus << 8) | cpu.latch_register;
+
+            cpu.hardware_interrupt = false;
             cpu.CompleteInstruction();
             break;
         }

@@ -57,7 +57,8 @@ void instructions::stack::PullStatus(CPU& cpu, int step) {
             cpu.status &= 0b00110000;
             cpu.status |= cpu.data_bus & 0b11001111;
 
-            // TODO: Delay interrupt flag effect
+            cpu.interrupt_delay_signal = true;
+            cpu.interrupt_delay_value = !static_cast<bool>(cpu.status & Flag::INTERRUPT_DISABLE);
 
             cpu.CompleteInstruction();
             break;

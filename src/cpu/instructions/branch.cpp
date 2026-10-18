@@ -32,7 +32,7 @@ void instructions::branch::BranchCarryClear(CPU& cpu, int step) {
     switch (step) {
         case 0: {
             cpu.program_counter++;
-            if ((cpu.status & Flag::CARRY) != 0) {
+            if (static_cast<bool>(cpu.status & Flag::CARRY)) {
                 cpu.CompleteInstruction();
             }
             break;
@@ -55,7 +55,7 @@ void instructions::branch::BranchCarrySet(CPU& cpu, int step) {
     switch (step) {
         case 0: {
             cpu.program_counter++;
-            if ((cpu.status & Flag::CARRY) == 0) {
+            if (!static_cast<bool>(cpu.status & Flag::CARRY)) {
                 cpu.CompleteInstruction();
             }
             break;
@@ -78,7 +78,7 @@ void instructions::branch::BranchEqual(CPU& cpu, int step) {
     switch (step) {
         case 0: {
             cpu.program_counter++;
-            if ((cpu.status & Flag::ZERO) == 0) {
+            if (!static_cast<bool>(cpu.status & Flag::ZERO)) {
                 cpu.CompleteInstruction();
             }
             break;
@@ -102,7 +102,7 @@ void instructions::branch::BranchNotEqual(CPU& cpu, int step) {
     switch (step) {
         case 0: {
             cpu.program_counter++;
-            if ((cpu.status & Flag::ZERO) != 0) {
+            if (static_cast<bool>(cpu.status & Flag::ZERO)) {
                 cpu.CompleteInstruction();
             }
             break;
@@ -126,7 +126,7 @@ void instructions::branch::BranchPositive(CPU& cpu, int step) {
     switch (step) {
         case 0: {
             cpu.program_counter++;
-            if ((cpu.status & Flag::NEGATIVE) != 0) {
+            if (static_cast<bool>(cpu.status & Flag::NEGATIVE)) {
                 cpu.CompleteInstruction();
             }
             break;
@@ -150,7 +150,7 @@ void instructions::branch::BranchNegative(CPU& cpu, int step) {
     switch (step) {
         case 0: {
             cpu.program_counter++;
-            if ((cpu.status & Flag::NEGATIVE) == 0) {
+            if (!static_cast<bool>(cpu.status & Flag::NEGATIVE)) {
                 cpu.CompleteInstruction();
             }
             break;
@@ -174,7 +174,7 @@ void instructions::branch::BranchOverflowClear(CPU& cpu, int step) {
     switch (step) {
         case 0: {
             cpu.program_counter++;
-            if ((cpu.status & Flag::OVERFLOW) != 0) {
+            if (static_cast<bool>(cpu.status & Flag::OVERFLOW)) {
                 cpu.CompleteInstruction();
             }
             break;
@@ -198,7 +198,7 @@ void instructions::branch::BranchOverflowSet(CPU& cpu, int step) {
     switch (step) {
         case 0: {
             cpu.program_counter++;
-            if ((cpu.status & Flag::OVERFLOW) == 0) {
+            if (!static_cast<bool>(cpu.status & Flag::OVERFLOW)) {
                 cpu.CompleteInstruction();
             }
             break;
@@ -215,5 +215,4 @@ void instructions::branch::BranchOverflowSet(CPU& cpu, int step) {
             break;
         }
     }
-
 }

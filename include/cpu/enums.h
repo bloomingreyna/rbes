@@ -152,3 +152,6 @@ constexpr uint8_t& operator|=(uint8_t& lhs, Flag rhs) {
     lhs |= static_cast<uint8_t>(rhs);
     return lhs;
 }
+constexpr uint8_t operator~(Flag operand) {
+    return static_cast<uint8_t>(operand);
+}

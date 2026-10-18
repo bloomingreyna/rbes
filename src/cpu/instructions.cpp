@@ -1,10 +1,26 @@
 #include <cpu/cpu.h>
+#include <memory/memory.h>
 
 void CPU::FetchInstruction() {
     rw_line = RWline::READ;
-    instruction = static_cast<Instruction>(data_bus);
-    address_bus = ++program_counter;
-    inst_step = InstructionStep::CALCULATE_ADDRESS;
+
+    if (interrupt_poll) {
+        instruction = Instruction::BRK;
+        hardware_interrupt = true;
+    } else {
+        instruction = static_cast<Instruction>(data_bus);
+        address_bus = program_counter;
+    }
+
+    if (interrupt_delay_signal) {
+        allow_irq = interrupt_delay_value;
+    }
+
+    if (true) { // TODO: True for everything other than implied
+        inst_step = InstructionStep::CALCULATE_ADDRESS;
+    } else {
+        inst_step = InstructionStep::EXECUTE;
+    }
 }
 
 void CPU::CalculateAddress() {

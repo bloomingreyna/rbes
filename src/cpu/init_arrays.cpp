@@ -52,7 +52,22 @@ void CPU::InitializeInstructions() {
         {branch::BranchPositive, {BPL}},
         {branch::BranchNegative, {BNE}},
         {branch::BranchOverflowClear, {BVC}},
-        {branch::BranchOverflowSet, {BVS}}
+        {branch::BranchOverflowSet, {BVS}},
+
+        {jump::Jump, {JMP_ABS, JMP_IND}},
+        {jump::JumpToSubroutine, {JSR_ABS}},
+        {jump::ReturnFromSubroutine, {RTS}},
+        {jump::ReturnFromInterrupt, {RTI}},
+        {jump::Break, {BRK}},
+
+        {stack::PushAccumulator, {PHA}},
+        {stack::PullAccumulator, {PLA}},
+        {stack::PushStatus, {PHP}},
+        {stack::PullStatus, {PLP}},
+        {stack::TransferXtoStack, {TXS}},
+        {stack::TransferStackToX, {TSX}},
+
+        {flags::ClearCarry, {}}
     };
 
     for (auto& [func_ptr, indices] : instruction_map) {
