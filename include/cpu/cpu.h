@@ -62,11 +62,9 @@ public:
 
     RWline rw_line = RWline::READ;
 
-    uint8_t accumulator;
-    uint8_t x_index;
-    uint8_t y_index;
-    uint8_t status;
+    uint8_t accumulator, x_index, y_index = 0x00;
+    uint8_t status = static_cast<uint8_t>(Flag::INTERRUPT_DISABLE);
 
-    uint16_t program_counter;
-    uint8_t stack_pointer; // Address calculated by: 0x0100 + stack_pointer
+    uint16_t program_counter = 0xFFFC;
+    uint8_t stack_pointer = 0xFD; // Address calculated by: 0x0100 + stack_pointer
 };

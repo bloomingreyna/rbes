@@ -30,7 +30,7 @@ void instructions::jump::JumpToSubroutine(CPU&cpu, int step) {
         case 4: {
             cpu.rw_line = RWline::READ;
 
-            cpu.second_latch = cpu.memory->DirectAccess(++cpu.program_counter);
+            cpu.second_latch = cpu.memory->Read(++cpu.program_counter);
             cpu.program_counter = (cpu.second_latch << 8) | cpu.latch_register;
 
             cpu.CompleteInstruction();
@@ -134,7 +134,7 @@ void instructions::jump::Break(CPU& cpu, int step) {
 
             InterruptVector vec = cpu.nmi_interrupt ? InterruptVector::NMI : InterruptVector::IRQ;
             cpu.program_counter &= 0xFF00;
-            cpu.program_counter = cpu.memory->FetchInterruptVector(vec, InterruptVectorByte::LOW);
+            cpu.program_counter = cpu.memory->Read(static_cast<uint8_t>(vec));
             break;
         }
         case 5: {
@@ -142,7 +142,7 @@ void instructions::jump::Break(CPU& cpu, int step) {
 
             InterruptVector vec = cpu.nmi_interrupt ? InterruptVector::NMI : InterruptVector::IRQ;
             cpu.program_counter &= 0xFF;
-            cpu.program_counter |= cpu.memory->FetchInterruptVector(vec, InterruptVectorByte::HIGH) << 8;
+            cpu.program_counter |= cpu.memory->Read(static_cast<uint8_t>(vec) + 1) << 8;
 
             cpu.hardware_interrupt = false;
             cpu.CompleteInstruction();

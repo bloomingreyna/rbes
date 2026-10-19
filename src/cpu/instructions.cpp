@@ -1,6 +1,8 @@
 #include <cpu/cpu.h>
 #include <memory/memory.h>
 
+#define Implied nullptr
+
 void CPU::FetchInstruction() {
     rw_line = RWline::READ;
 
@@ -11,7 +13,7 @@ void CPU::FetchInstruction() {
         interrupt_poll = false;
     } else {
         instruction = static_cast<Instruction>(data_bus);
-        address_bus = program_counter;
+        address_bus = ++program_counter;
     }
 
     if (interrupt_delay_signal) {
@@ -19,7 +21,7 @@ void CPU::FetchInstruction() {
     }
 
     uint8_t opcode = static_cast<uint8_t>(instruction);
-    if (addressing_mode_array[opcode] != nullptr) {
+    if (addressing_mode_array[opcode] != Implied) {
         inst_step = InstructionStep::CALCULATE_ADDRESS;
     } else {
         inst_step = InstructionStep::EXECUTE;
