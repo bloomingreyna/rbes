@@ -2,28 +2,21 @@
 #include <cpu/instructions.h>
 
 void instructions::stack::PushAccumulator(CPU& cpu, int step) {
-    switch (step) {
-        case 0: { break; } // Dead cycle
-        case 1: {
-            cpu.rw_line = RWline::WRITE;
+    cpu.rw_line = RWline::WRITE;
 
-            cpu.address_bus = 0x0100 + cpu.stack_pointer--;
-            cpu.data_bus = cpu.accumulator;
+    cpu.address_bus = 0x0100 + cpu.stack_pointer--;
+    cpu.data_bus = cpu.accumulator;
 
-            cpu.CompleteInstruction();
-            break;
-        }
-    }
+    cpu.CompleteInstruction();
 }
 
 void instructions::stack::PullAccumulator(CPU& cpu, int step) {
     switch (step) {
-        case 0: { break; } // Dead cycle
-        case 1: {
+        case 0: {
             cpu.address_bus = 0x0100 + ++cpu.stack_pointer;
             break;
         }
-        case 2: {
+        case 1: {
             cpu.accumulator = cpu.data_bus;
             cpu.CompleteInstruction();
             break;
@@ -32,33 +25,23 @@ void instructions::stack::PullAccumulator(CPU& cpu, int step) {
 }
 
 void instructions::stack::PushStatus(CPU& cpu, int step) {
-    switch (step) {
-        case 0: { break; } // Dead cycle
-        case 1: {
-            cpu.rw_line = RWline::WRITE;
+    cpu.rw_line = RWline::WRITE;
 
-            cpu.address_bus = 0x0100 + cpu.stack_pointer--;
-            cpu.data_bus = cpu.status | 0b00110000;
+    cpu.address_bus = 0x0100 + cpu.stack_pointer--;
+    cpu.data_bus = cpu.status | 0b00110000;
 
-            cpu.CompleteInstruction();
-            break;
-        }
-    }
+    cpu.CompleteInstruction();
 }
 
 void instructions::stack::PullStatus(CPU& cpu, int step) {
     switch (step) {
-        case 0: { break; } // Dead cycle
-        case 1: {
+        case 0: {
             cpu.address_bus = 0x0100 + ++cpu.stack_pointer;
             break;
         }
-        case 2: {
+        case 1: {
             cpu.status &= 0b00110000;
             cpu.status |= cpu.data_bus & 0b11001111;
-
-            cpu.interrupt_delay_signal = true;
-            cpu.interrupt_delay_value = !static_cast<bool>(cpu.status & Flag::INTERRUPT_DISABLE);
 
             cpu.CompleteInstruction();
             break;

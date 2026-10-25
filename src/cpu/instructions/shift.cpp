@@ -10,6 +10,7 @@ void instructions::shift::ArithmeticShiftLeft(CPU& cpu, int step) {
 
                 cpu.CompleteInstruction();
             } else {
+                cpu.rw_line = RWline::WRITE;
                 cpu.alu.ArithmeticShiftLeft(cpu.data_bus);
             }
             cpu.status &= cpu.alu.clear_mask;
@@ -17,10 +18,6 @@ void instructions::shift::ArithmeticShiftLeft(CPU& cpu, int step) {
             break;
         }
         case 1: {
-            cpu.rw_line = RWline::WRITE;
-            break;
-        }
-        case 2: {
             cpu.data_bus = cpu.alu.result;
             cpu.CompleteInstruction();
             break;
@@ -31,12 +28,13 @@ void instructions::shift::ArithmeticShiftLeft(CPU& cpu, int step) {
 void instructions::shift::LogicalShiftRight(CPU& cpu, int step) {
     switch (step) {
         case 0: {
-            if (cpu.instruction == Instruction::LSR_ACC) {
+            if (cpu.instruction == Instruction::ASL_ACC) {
                 cpu.alu.LogicalShiftRight(cpu.accumulator);
                 cpu.accumulator = cpu.alu.result;
 
                 cpu.CompleteInstruction();
             } else {
+                cpu.rw_line = RWline::WRITE;
                 cpu.alu.LogicalShiftRight(cpu.data_bus);
             }
             cpu.status &= cpu.alu.clear_mask;
@@ -44,10 +42,6 @@ void instructions::shift::LogicalShiftRight(CPU& cpu, int step) {
             break;
         }
         case 1: {
-            cpu.rw_line = RWline::WRITE;
-            break;
-        }
-        case 2: {
             cpu.data_bus = cpu.alu.result;
             cpu.CompleteInstruction();
             break;
@@ -65,6 +59,7 @@ void instructions::shift::RotateLeft(CPU& cpu, int step) {
 
                 cpu.CompleteInstruction();
             } else {
+                cpu.rw_line = RWline::WRITE;
                 cpu.alu.RotateLeft(cpu.data_bus, carry);
             }
             cpu.status &= cpu.alu.clear_mask;
@@ -72,10 +67,6 @@ void instructions::shift::RotateLeft(CPU& cpu, int step) {
             break;
         }
         case 1: {
-            cpu.rw_line = RWline::WRITE;
-            break;
-        }
-        case 2: {
             cpu.data_bus = cpu.alu.result;
             cpu.CompleteInstruction();
             break;
@@ -87,12 +78,13 @@ void instructions::shift::RotateRight(CPU& cpu, int step) {
     switch (step) {
         case 0: {
             bool carry = (cpu.status & Flag::CARRY) != 0;
-            if (cpu.instruction == Instruction::ROR_ACC) {
+            if (cpu.instruction == Instruction::ROL_ACC) {
                 cpu.alu.RotateRight(cpu.accumulator, carry);
                 cpu.accumulator = cpu.alu.result;
 
                 cpu.CompleteInstruction();
             } else {
+                cpu.rw_line = RWline::WRITE;
                 cpu.alu.RotateRight(cpu.data_bus, carry);
             }
             cpu.status &= cpu.alu.clear_mask;
@@ -100,10 +92,6 @@ void instructions::shift::RotateRight(CPU& cpu, int step) {
             break;
         }
         case 1: {
-            cpu.rw_line = RWline::WRITE;
-            break;
-        }
-        case 2: {
             cpu.data_bus = cpu.alu.result;
             cpu.CompleteInstruction();
             break;

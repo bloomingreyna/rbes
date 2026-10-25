@@ -20,6 +20,9 @@ struct ALU {
     void RotateLeft(uint8_t operand, bool carry);
     void RotateRight(uint8_t operand, bool carry);
 
+    // Helper function; not a core part of any instructions.
+    void Add(uint8_t lhs, uint8_t rhs);
+
     uint8_t result;
     uint8_t status;
     uint8_t clear_mask;

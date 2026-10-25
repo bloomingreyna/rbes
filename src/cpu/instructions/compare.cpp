@@ -27,4 +27,3 @@ void instructions::compare::CompareY(CPU& cpu, int step) {
 
     cpu.CompleteInstruction();
 }
-

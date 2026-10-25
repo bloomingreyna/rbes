@@ -17,17 +17,18 @@ public:
 
     void InitializeAddressingModes();
     void InitializeInstructions();
+    void InitializeCycleCounts();
 
-    void ExecutionLogic();
+    void Tick();
 
     void FetchInstruction();
     void CalculateAddress();
     void ExecuteInstruction();
 
-    void HardwareInterrupt();
+    void CheckInterruptInputs();
+    void PollInterrupts();
 
     void CompleteAddressingMode();
-    void PollInterrupts();
     void CompleteInstruction();
 
     /* ----|----|---- */
@@ -36,9 +37,15 @@ public:
     Memory* memory;
 
     int cycle_step = 0;
+    int cycle_count = 0;
 
     std::array<void(*)(CPU&, int), 256> addressing_mode_array;
     std::array<void(*)(CPU&, int), 256> instruction_array;
+    std::array<int, 256> cycle_count_array;
+
+    void(*addr_func)(CPU&, int);
+    void(*inst_func)(CPU&, int);
+    int inst_cycle_count;
 
     Instruction instruction;
     InstructionStep inst_step = InstructionStep::INITIALIZE;
@@ -46,19 +53,17 @@ public:
     uint16_t address_bus;
     uint8_t data_bus;
 
-    uint8_t latch_register;
-    uint8_t second_latch;
-    uint16_t pc_latch;
-    bool pc_jump = false;
+    uint8_t latch;
 
-    bool interrupt_delay_signal = false; // Allows for flag and pull instructions to delay flag effect.
-    bool interrupt_delay_value; // Determines value of allow_irq when interrupt_delay_signal is true.
+    bool irq_input = false;
+    bool nmi_input = false; // Ignores I flag on status register
+    bool nmi_last_state = false; // NMI interrupts are edge-sensitive
 
-    bool allow_irq = false;
-    bool irq_interrupt = false;
-    bool nmi_interrupt = false; // Ignores I flag on status register
-    bool hardware_interrupt = false; // Determines behaviors in BRK instruction
-    bool interrupt_poll = false;
+    bool irq_signal = false;
+    bool nmi_signal = false;
+
+    bool service_interrupt = false;
+    bool is_hardware_interrupt = false;
 
     RWline rw_line = RWline::READ;
 

@@ -1,41 +1,35 @@
 #include <cpu/cpu.h>
 #include <memory/memory.h>
 
-#define Implied nullptr
-
 void CPU::FetchInstruction() {
     rw_line = RWline::READ;
 
-    if (interrupt_poll) {
+    instruction = static_cast<Instruction>(data_bus);
+    if (service_interrupt) {
         instruction = Instruction::BRK;
-        hardware_interrupt = true;
-
-        interrupt_poll = false;
-    } else {
-        instruction = static_cast<Instruction>(data_bus);
-        address_bus = ++program_counter;
+        service_interrupt = false;
+        is_hardware_interrupt = true;
     }
 
-    if (interrupt_delay_signal) {
-        allow_irq = interrupt_delay_value;
-    }
+    size_t index = static_cast<size_t>(instruction);
+    addr_func = addressing_mode_array[index];
+    inst_func = instruction_array[index];
+    inst_cycle_count = cycle_count_array[index];
 
-    uint8_t opcode = static_cast<uint8_t>(instruction);
-    if (addressing_mode_array[opcode] != Implied) {
-        inst_step = InstructionStep::CALCULATE_ADDRESS;
-    } else {
-        inst_step = InstructionStep::EXECUTE;
+    inst_step = InstructionStep::CALCULATE_ADDRESS;
+    program_counter++;
+
+    if (inst_cycle_count == -1) { // Branch behavior
+        PollInterrupts();
     }
 }
 
 void CPU::CalculateAddress() {
-    uint8_t opcode = static_cast<uint8_t>(instruction);
-    addressing_mode_array[opcode](*this, cycle_step++);
+    addr_func(*this, cycle_step++); 
 }
 
 void CPU::ExecuteInstruction() {
-    uint8_t opcode = static_cast<uint8_t>(instruction);
-    instruction_array[opcode](*this, cycle_step++);
+    inst_func(*this, cycle_step++);
 }
 
 void CPU::CompleteAddressingMode() {
@@ -43,10 +37,19 @@ void CPU::CompleteAddressingMode() {
     inst_step = InstructionStep::EXECUTE;
 }
 
-void CPU::PollInterrupts() {
-    if ((allow_irq && irq_interrupt) || nmi_interrupt) {
-        interrupt_poll = true;
+void CPU::CheckInterruptInputs() {
+    if (!nmi_last_state && nmi_input) {
+        nmi_signal = true;
     }
+    nmi_last_state = nmi_input;
+
+    if (irq_input && (status & Flag::INTERRUPT_DISABLE) != 0) {
+        irq_signal = true;
+    }
+}
+
+void CPU::PollInterrupts() {
+    service_interrupt = irq_signal || nmi_signal;
 }
 
 void CPU::CompleteInstruction() {

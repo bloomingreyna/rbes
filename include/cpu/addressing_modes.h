@@ -3,8 +3,7 @@
 class CPU;
 
 namespace addressing_modes {
-    void NoAddress(CPU& cpu, int step);
-
+    void Implied(CPU& cpu, int step);
     void Immediate(CPU& cpu, int step);
 
     void ZeroPage(CPU& cpu, int step);

@@ -13,6 +13,7 @@ void instructions::arithmetic::AddWithCarry(CPU& cpu, int step) {
 }
 
 void instructions::arithmetic::SubtractWithCarry(CPU& cpu, int step) {
+    // SBC is internally implemented via ADC with bitwise NOT memory.
     cpu.alu.AddWithCarry(
         cpu.accumulator, ~cpu.data_bus, (cpu.status & Flag::CARRY) != 0
     );
@@ -26,16 +27,14 @@ void instructions::arithmetic::SubtractWithCarry(CPU& cpu, int step) {
 void instructions::arithmetic::IncrementMemory(CPU& cpu, int step) {
     switch (step) {
         case 0: {
+            cpu.rw_line = RWline::WRITE;
+
             cpu.alu.Increment(cpu.data_bus);
             cpu.status &= cpu.alu.clear_mask;
             cpu.status |= cpu.alu.status;
             break;
         }
-        case 1: { // Simulate routing ALU output to data bus
-            cpu.rw_line = RWline::WRITE;
-            break;
-        }
-        case 2: {
+        case 1: {
             cpu.data_bus = cpu.alu.result;
             cpu.CompleteInstruction();
             break;
@@ -66,16 +65,14 @@ void instructions::arithmetic::IncrementY(CPU& cpu, int step) {
 void instructions::arithmetic::DecrementMemory(CPU& cpu, int step) {
     switch (step) {
         case 0: {
+            cpu.rw_line = RWline::WRITE;
+
             cpu.alu.Decrement(cpu.data_bus);
             cpu.status &= cpu.alu.clear_mask;
             cpu.status |= cpu.alu.status;
             break;
         }
-        case 1: { // Simulate routing ALU output to data bus
-            cpu.rw_line = RWline::WRITE;
-            break;
-        }
-        case 2: {
+        case 1: {
             cpu.data_bus = cpu.alu.result;
             cpu.CompleteInstruction();
             break;
@@ -95,7 +92,7 @@ void instructions::arithmetic::DecrementX(CPU& cpu, int step) {
 
 void instructions::arithmetic::DecrementY(CPU& cpu, int step) {
     cpu.alu.Decrement(cpu.y_index);
-    
+
     cpu.y_index = cpu.alu.result;
     cpu.status &= cpu.alu.clear_mask;
     cpu.status |= cpu.alu.status;

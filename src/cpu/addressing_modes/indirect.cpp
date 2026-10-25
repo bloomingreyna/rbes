@@ -5,31 +5,32 @@
 void addressing_modes::Indirect(CPU& cpu, int step) {
     switch (step) {
         case 0: {
-            cpu.latch_register = cpu.data_bus;
-            cpu.address_bus = ++cpu.program_counter;
+            cpu.address_bus = cpu.program_counter++;
             break;
         }
         case 1: {
-            cpu.address_bus = (cpu.data_bus << 8) | cpu.latch_register;
-            cpu.program_counter++;
+            cpu.latch = cpu.data_bus;
+            cpu.address_bus = cpu.program_counter++;
             break;
         }
         case 2: {
-            cpu.latch_register = cpu.data_bus;
-
-            // Due to a bug in the original CPU, incrementing the pointer address to retrieve the high byte of the target address does not properly cross pages. The below code intentionally implements this bug.
-
-            uint8_t ptr_low_byte = cpu.address_bus & 0xFF;
-            ptr_low_byte++;
-            cpu.address_bus &= 0xFF00;
-            cpu.address_bus |= ptr_low_byte;
-
+            cpu.address_bus = (cpu.data_bus << 8) | cpu.latch;
             break;
         }
         case 3: {
-            cpu.address_bus = (cpu.data_bus << 8) | cpu.latch_register;
+            cpu.latch = cpu.data_bus;
+
+            // There is a bug in the original CPU that does not allow the pointer increment to properly cross pages. The below code implements this bug.
+            uint8_t ptr_low = cpu.address_bus & 0xFF;
+            ptr_low++;
+            cpu.address_bus &= 0xFF00;
+            cpu.address_bus |= ptr_low;
+
+            break;
+        }
+        case 4: {
+            cpu.address_bus = (cpu.data_bus << 8) | cpu.latch;
             cpu.CompleteAddressingMode();
-            cpu.ExecuteInstruction();
             break;
         }
     }
@@ -38,24 +39,26 @@ void addressing_modes::Indirect(CPU& cpu, int step) {
 void addressing_modes::IndirectX(CPU& cpu, int step) {
     switch (step) {
         case 0: {
-            cpu.address_bus = cpu.data_bus;
-            cpu.program_counter++;
+            cpu.address_bus = cpu.program_counter++;
             break;
         }
         case 1: {
+            cpu.address_bus = cpu.data_bus;
+            break;
+        }
+        case 2: {
             cpu.address_bus += cpu.x_index;
             cpu.address_bus &= 0xFF;
             break;
         }
-        case 2: {
-            cpu.latch_register = cpu.data_bus;
+        case 3: {
+            cpu.latch = cpu.data_bus;
             cpu.address_bus++;
             cpu.address_bus &= 0xFF;
             break;
         }
-        case 3: {
-            cpu.address_bus = (cpu.data_bus << 8) | cpu.latch_register;
-
+        case 4: {
+            cpu.address_bus = (cpu.data_bus << 8) | cpu.latch;
             cpu.CompleteAddressingMode();
             break;
         }
@@ -65,27 +68,36 @@ void addressing_modes::IndirectX(CPU& cpu, int step) {
 void addressing_modes::IndirectY(CPU& cpu, int step) {
     switch (step) {
         case 0: {
-            cpu.address_bus = cpu.data_bus;
-            cpu.program_counter++;
+            cpu.address_bus = cpu.program_counter++;
             break;
         }
         case 1: {
-            cpu.latch_register = cpu.data_bus;
+            cpu.address_bus = cpu.data_bus;
+            break;
+        }
+        case 2: {
+            cpu.latch = cpu.data_bus;
             cpu.address_bus++;
             cpu.address_bus &= 0xFF;
             break;
         }
-        case 2: {
-            cpu.alu.AddWithCarry(cpu.latch_register, cpu.y_index, false);
+        case 3: {
+            cpu.alu.Add(cpu.latch, cpu.y_index);
             cpu.address_bus = (cpu.data_bus << 8) | cpu.alu.result;
 
-            auto inst_func = cpu.instruction_array[static_cast<size_t>(cpu.instruction)];
-            if (inst_func == instructions::access::StoreAccumulator || (cpu.alu.status & Flag::CARRY) == 0) {
+            bool is_store = cpu.inst_func == instructions::access::StoreAccumulator;
+            if (!is_store && (cpu.alu.status & Flag::CARRY) == 0) {
                 cpu.CompleteAddressingMode();
             }
+            break;
         }
-        case 3: {
-            if ((cpu.alu.status & Flag::CARRY) == 0) {
+        case 4: {
+            bool is_store = cpu.inst_func == instructions::access::StoreAccumulator;
+            if (!is_store) {
+                cpu.inst_cycle_count++;
+            }
+
+            if ((cpu.alu.status & Flag::CARRY) != 0) {
                 cpu.address_bus += 0x01 << 8;
             }
 

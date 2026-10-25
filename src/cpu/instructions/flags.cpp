@@ -8,9 +8,6 @@ void instructions::flags::ClearCarry(CPU& cpu, int step) {
 
 void instructions::flags::ClearInterruptDisable(CPU& cpu, int step) {
     cpu.status &= ~Flag::INTERRUPT_DISABLE;
-    cpu.interrupt_delay_signal = true;
-    cpu.interrupt_delay_value = true;
-
     cpu.CompleteInstruction();
 }
 
@@ -31,9 +28,6 @@ void instructions::flags::SetCarry(CPU& cpu, int step) {
 
 void instructions::flags::SetInterruptDisable(CPU& cpu, int step) {
     cpu.status |= Flag::INTERRUPT_DISABLE;
-    cpu.interrupt_delay_signal = true;
-    cpu.interrupt_delay_value = false;
-
     cpu.CompleteInstruction();
 }
 
