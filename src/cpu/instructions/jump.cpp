@@ -121,7 +121,9 @@ void instructions::jump::Break(CPU& cpu, int step) {
         case 4: {
             cpu.program_counter &= 0xFF00;
             cpu.program_counter |= cpu.data_bus;
-            cpu.address_bus = cpu.nmi_signal ? 0xFFFB : 0xFFFF;
+
+            // NMI interrupts cannot "half-hijack" a BRK instruction
+            cpu.address_bus = cpu.address_bus == 0xFFFA ? 0xFFFB : 0xFFFF;
             break;
         }
         case 5: {

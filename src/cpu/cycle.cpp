@@ -23,23 +23,13 @@ void CPU::Tick() {
         }
     }
 
-    if (inst_cycle_count != -1) {
-        if (cycle_count == inst_cycle_count) {
-            PollInterrupts();
-        }
-    } else {
-        switch (cycle_count) {
-            case 1: {
-                PollInterrupts();
-                break;
-            }
-            case 3: {
-                if (inst_step != InstructionStep::FETCH) {
-                    PollInterrupts();
-                }
-                break;
-            }
-        }
+    bool branch_page_cross_poll = (
+        inst_cycle_count == -1 &&
+        cycle_count == 3 &&
+        ((alu.status & Flag::OVERFLOW) != 0 || (alu.status & Flag::NEGATIVE) != 0)
+    );
+    if (cycle_count == inst_cycle_count || branch_page_cross_poll) {
+        PollInterrupts();
     }
 
     if (inst_step == InstructionStep::FETCH) {
@@ -48,17 +38,13 @@ void CPU::Tick() {
 
     switch (rw_line) {
         case RWline::WRITE: {
-            memory->Write(address_bus, data_bus);
+            memory->CPUWrite(address_bus, data_bus);
             break;
         }
         case RWline::READ: {
-            if (inst_step != InstructionStep::FETCH) {
-                data_bus = memory->Read(address_bus);
-            } else {
-                address_bus = program_counter;
-                data_bus = memory->Read(address_bus);
-
-                // Fetch cycle overlaps with final cycle of previous instruction
+            if (cycle_count > 1) {
+                data_bus = memory->CPURead(address_bus);
+            } else if (cycle_count == 0) {
                 FetchInstruction();
                 cycle_count++;
             }

@@ -169,7 +169,7 @@ void CPU::InitializeInstructions() {
         {branch::BranchEqual, {BEQ}},
         {branch::BranchNotEqual, {BNE}},
         {branch::BranchPositive, {BPL}},
-        {branch::BranchNegative, {BNE}},
+        {branch::BranchNegative, {BMI}},
         {branch::BranchOverflowClear, {BVC}},
         {branch::BranchOverflowSet, {BVS}},
 
@@ -204,7 +204,7 @@ void CPU::InitializeInstructions() {
     }
 }
 
-// This function is essentially only used to help poll interrupts at the correct timing; branch instructions are deliberately omitted from regular initialization and are separately tracked according to their documented special behavior.
+// This function is essentially only used to help poll interrupts at the correct timing. As such, branch instructions have a cycle count of "-1" to distinguish their irregular behavior.
 void CPU::InitializeCycleCounts() {
     std::unordered_map<int, std::vector<Instruction>> instruction_map = {
         {-1, { // For easy branch instruction detection

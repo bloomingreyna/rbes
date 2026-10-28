@@ -85,22 +85,19 @@ void addressing_modes::IndirectY(CPU& cpu, int step) {
             cpu.alu.Add(cpu.latch, cpu.y_index);
             cpu.address_bus = (cpu.data_bus << 8) | cpu.alu.result;
 
-            bool is_store = cpu.inst_func == instructions::access::StoreAccumulator;
-            if (!is_store && (cpu.alu.status & Flag::CARRY) == 0) {
-                cpu.CompleteAddressingMode();
+            if (cpu.inst_func != instructions::access::StoreAccumulator) {
+                if ((cpu.alu.status & Flag::CARRY) == 0) {
+                    cpu.CompleteAddressingMode();
+                } else {
+                    cpu.inst_cycle_count++;
+                }
             }
             break;
         }
         case 4: {
-            bool is_store = cpu.inst_func == instructions::access::StoreAccumulator;
-            if (!is_store) {
-                cpu.inst_cycle_count++;
-            }
-
             if ((cpu.alu.status & Flag::CARRY) != 0) {
                 cpu.address_bus += 0x01 << 8;
             }
-
             cpu.CompleteAddressingMode();
             break;
         }

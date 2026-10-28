@@ -14,11 +14,9 @@ public:
 
     void LoadFile(const std::string& file_name);
 
-    uint8_t Read(uint16_t address);
-    void Write(uint16_t address, uint8_t value);
-
-    uint8_t FetchInterruptVector(InterruptVector vec, InterruptVectorByte byte);
-    uint8_t DirectAccess(uint16_t address); // Doesn't count as a memory read. Not in my world. Don't fucking ask.
+    uint8_t CPURead(uint16_t address);
+    void CPUWrite(uint16_t address, uint8_t value);
 private:
-    std::vector<char> memory = std::vector<char>(MEMORY_MAP_SIZE);
+    std::vector<char> cpu_bus = std::vector<char>(MEMORY_MAP_SIZE);
+    std::vector<char> ppu_bus = std::vector<char>();
 };

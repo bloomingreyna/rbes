@@ -1,8 +1,12 @@
 #include <cpu/cpu.h>
+#include <cpu/instructions.h>
 #include <memory/memory.h>
 
 void CPU::FetchInstruction() {
     rw_line = RWline::READ;
+
+    address_bus = program_counter++;
+    data_bus = memory->CPURead(address_bus);
 
     instruction = static_cast<Instruction>(data_bus);
     if (service_interrupt) {
@@ -16,12 +20,11 @@ void CPU::FetchInstruction() {
     inst_func = instruction_array[index];
     inst_cycle_count = cycle_count_array[index];
 
-    inst_step = InstructionStep::CALCULATE_ADDRESS;
-    program_counter++;
-
-    if (inst_cycle_count == -1) { // Branch behavior
+    if (inst_cycle_count == -1) { // Branch instruction behavior
         PollInterrupts();
     }
+
+    inst_step = InstructionStep::CALCULATE_ADDRESS;
 }
 
 void CPU::CalculateAddress() {
@@ -35,6 +38,15 @@ void CPU::ExecuteInstruction() {
 void CPU::CompleteAddressingMode() {
     cycle_step = 0;
     inst_step = InstructionStep::EXECUTE;
+
+    bool is_store = (
+        inst_func == instructions::access::StoreAccumulator ||
+        inst_func == instructions::access::StoreX ||
+        inst_func == instructions::access::StoreY
+    );
+    if (is_store || inst_func == instructions::jump::Jump) {
+        ExecuteInstruction();
+    }
 }
 
 void CPU::CheckInterruptInputs() {

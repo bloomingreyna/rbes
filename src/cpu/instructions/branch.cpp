@@ -6,9 +6,9 @@ void FixupCycle(CPU& cpu) {
     cpu.program_counter |= cpu.alu.result;
 
     if ((cpu.alu.status & Flag::OVERFLOW) != 0) {
-        cpu.program_counter += 0x01 << 8;
+        cpu.alu.Increment(cpu.program_counter >> 8);
     } else if ((cpu.alu.status & Flag::NEGATIVE) != 0) {
-        cpu.program_counter -= 0x01 << 8;
+        cpu.alu.Decrement(cpu.program_counter & 0xFF);
     } else {
         cpu.CompleteInstruction();
     }
@@ -29,6 +29,9 @@ void instructions::branch::BranchCarryClear(CPU& cpu, int step) {
             break;
         }
         case 2: {
+            cpu.program_counter &= 0xFF;
+            cpu.program_counter |= cpu.alu.result << 8;
+
             cpu.CompleteInstruction();
             break;
         }
@@ -50,6 +53,9 @@ void instructions::branch::BranchCarrySet(CPU& cpu, int step) {
             break;
         }
         case 2: {
+            cpu.program_counter &= 0xFF;
+            cpu.program_counter |= cpu.alu.result << 8;
+
             cpu.CompleteInstruction();
             break;
         }
@@ -71,6 +77,9 @@ void instructions::branch::BranchEqual(CPU& cpu, int step) {
             break;
         }
         case 2: {
+            cpu.program_counter &= 0xFF;
+            cpu.program_counter |= cpu.alu.result << 8;
+
             cpu.CompleteInstruction();
             break;
         }
@@ -93,6 +102,9 @@ void instructions::branch::BranchNotEqual(CPU& cpu, int step) {
             break;
         }
         case 2: {
+            cpu.program_counter &= 0xFF;
+            cpu.program_counter |= cpu.alu.result << 8;
+
             cpu.CompleteInstruction();
             break;
         }
@@ -115,6 +127,9 @@ void instructions::branch::BranchPositive(CPU& cpu, int step) {
             break;
         }
         case 2: {
+            cpu.program_counter &= 0xFF;
+            cpu.program_counter |= cpu.alu.result << 8;
+
             cpu.CompleteInstruction();
             break;
         }
@@ -137,6 +152,9 @@ void instructions::branch::BranchNegative(CPU& cpu, int step) {
             break;
         }
         case 2: {
+            cpu.program_counter &= 0xFF;
+            cpu.program_counter |= cpu.alu.result << 8;
+
             cpu.CompleteInstruction();
             break;
         }
@@ -159,6 +177,9 @@ void instructions::branch::BranchOverflowClear(CPU& cpu, int step) {
             break;
         }
         case 2: {
+            cpu.program_counter &= 0xFF;
+            cpu.program_counter |= cpu.alu.result << 8;
+
             cpu.CompleteInstruction();
             break;
         }
@@ -181,6 +202,9 @@ void instructions::branch::BranchOverflowSet(CPU& cpu, int step) {
             break;
         }
         case 2: {
+            cpu.program_counter &= 0xFF;
+            cpu.program_counter |= cpu.alu.result << 8;
+
             cpu.CompleteInstruction();
             break;
         }

@@ -1,5 +1,6 @@
 #include <filesystem>
 #include <fstream>
+#include <iostream>
 #include <memory>
 
 #include <memory/enums.h>
@@ -26,15 +27,14 @@ void Memory::LoadFile(const std::string& file_name) {
     file.read(buffer.data(), file_size);
 
     size_t cartridge_start = static_cast<size_t>(AddressStart::CARTRIDGE);
-    size_t cartridge_end = static_cast<size_t>(AddressStart::CARTRIDGE);
 
-    for (size_t i = cartridge_start; i <= cartridge_end; ++i) {
-        size_t buffer_index = i - cartridge_start;
-        memory[i] = buffer[buffer_index];
+    for (size_t i = 0x8000; i < 0x8000 + 1024 * 32; ++i) {
+        size_t buffer_index = i - 0x8000 + 16;
+        cpu_bus[i] = buffer[buffer_index];
     }
 }
 
-uint8_t Memory::Read(uint16_t address) {
+uint8_t Memory::CPURead(uint16_t address) {
     uint16_t effective_address;
     if (address >= AddressStart::INTERNAL_RAM && address <= AddressEnd::INTERNAL_RAM) {
         effective_address = address % static_cast<uint16_t>(MirrorModulo::INTERNAL_RAM);
@@ -44,10 +44,10 @@ uint8_t Memory::Read(uint16_t address) {
         effective_address = address;
     }
 
-    return memory[effective_address];
+    return cpu_bus[effective_address];
 }
 
-void Memory::Write(uint16_t address, uint8_t value) {
+void Memory::CPUWrite(uint16_t address, uint8_t value) {
     uint16_t effective_address;
     if (address >= AddressStart::INTERNAL_RAM && address <= AddressEnd::INTERNAL_RAM) {
         effective_address = address % static_cast<uint16_t>(MirrorModulo::INTERNAL_RAM);
@@ -57,13 +57,5 @@ void Memory::Write(uint16_t address, uint8_t value) {
         effective_address = address;
     }
 
-    memory[effective_address] = value;
-}
-
-uint8_t Memory::FetchInterruptVector(InterruptVector vec, InterruptVectorByte byte) {
-    return memory[static_cast<size_t>(vec) + static_cast<size_t>(byte)];
-}
-
-uint8_t Memory::DirectAccess(uint16_t address) {
-    return memory[address];
+    cpu_bus[effective_address] = value;
 }

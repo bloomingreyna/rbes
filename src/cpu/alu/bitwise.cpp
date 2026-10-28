@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include <cpu/alu.h>
 #include <cpu/enums.h>
 

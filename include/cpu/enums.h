@@ -75,9 +75,9 @@ enum class Instruction {
     LDX_ZP = 0xA6, LDX_ZP_Y = 0xB6,
     LDX_ABS = 0xAE, LDX_ABS_Y = 0xBE,
 
-    LDY_IMM = 0xA2,
-    LDY_ZP = 0xA6, LDY_ZP_X = 0xB6,
-    LDY_ABS = 0xAE, LDY_ABS_X = 0xBE,
+    LDY_IMM = 0xA0,
+    LDY_ZP = 0xA4, LDY_ZP_X = 0xB4,
+    LDY_ABS = 0xAC, LDY_ABS_X = 0xBC,
 
     LSR_ACC = 0x4A,
     LSR_ZP = 0x46, LSR_ZP_X = 0x56,
