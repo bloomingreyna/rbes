@@ -5,14 +5,16 @@ RBES (pronounced like the shittiest fast food chain of all time, Arby's) is my a
 *Note from Captain Obvious: This project is a work-in-progress.*
 
 ## Goals
-- Maybe not *full* cycle accuracy, but at least attempt individual cycle-stepping
+- Cycle accuracy (i.e. pass test suites such as [AccuracyCoin](https://github.com/100thCoin/AccuracyCoin))
 - Consistent performance (it's an 80's console, for heaven's sake)
 - Ease of use/configuration
+- Graphical interface
 
 ## Technical Info
 ### Languages:
 The main emulation logic is written entirely in C++. External libraries (listed below) are written in either C++ or C.
 
 ### Libraries:
+* [glad](https://github.com/dav1dde/glad)
 * [glfw](https://github.com/glfw/glfw)
 * [whereami](https://github.com/gpakosz/whereami/tree/master)
