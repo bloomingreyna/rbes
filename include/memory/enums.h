@@ -18,6 +18,17 @@ enum class AddressStart : uint16_t {
     CARTRIDGE = 0x4020
 };
 
+enum class PPUregister : uint16_t {
+    PPUCTRL = 0x2000,
+    PPUMASK = 0x2001,
+    PPUSTATUS = 0x2002,
+    OAMADDR = 0x2003,
+    OAMDATA = 0x2004,
+    PPUSCROLL = 0x2005,
+    PPUADDR = 0x2006,
+    PPUDATA = 0x2007
+};
+
 enum class AddressEnd : uint16_t {
     INTERNAL_RAM = 0x1FFF,
     PPU_REGISTERS = 0x3FFF,

@@ -28,7 +28,7 @@ void CPU::Tick() {
         cycle_count == 3 &&
         ((alu.status & Flag::OVERFLOW) != 0 || (alu.status & Flag::NEGATIVE) != 0)
     );
-    if (cycle_count == inst_cycle_count || branch_page_cross_poll) {
+    if ((cycle_count == inst_cycle_count || branch_page_cross_poll) && !is_hardware_interrupt) {
         PollInterrupts();
     }
 

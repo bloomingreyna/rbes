@@ -115,7 +115,12 @@ void instructions::jump::Break(CPU& cpu, int step) {
         }
         case 3: {
             cpu.rw_line = RWline::READ;
-            cpu.address_bus = cpu.nmi_signal ? 0xFFFA : 0xFFFE;
+            if (cpu.nmi_signal) {
+                cpu.address_bus = 0xFFFA;
+                cpu.nmi_signal = false;
+            } else {
+                cpu.address_bus = 0xFFFE;
+            }
             break;
         }
         case 4: {
