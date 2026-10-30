@@ -17,4 +17,5 @@ The main emulation logic is written entirely in C++. External libraries (listed 
 ### Libraries:
 * [glad](https://github.com/dav1dde/glad)
 * [glfw](https://github.com/glfw/glfw)
+* [json](https://github.com/nlohmann/json)
 * [whereami](https://github.com/gpakosz/whereami/tree/master)
