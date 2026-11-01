@@ -5,14 +5,15 @@
 
 #include <ppu/enums.h>
 
-class Memory;
-
 constexpr size_t OAM_SIZE = 256;
 
-class PPU {
-public:
+struct Memory;
+
+struct PPU {
+    PPU(Memory* mem);
+
     void Tick();
-private:
+
     Memory* memory;
 
     EOflag eo_flag = EOflag::EVEN;

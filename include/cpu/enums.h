@@ -128,7 +128,7 @@ enum class Instruction {
     XOR_IND_X = 0x41, XOR_IND_Y = 0x51
 };
 
-enum class InstructionStep {
+enum class CycleType {
     INITIALIZE, FETCH, CALCULATE_ADDRESS, EXECUTE
 };
 

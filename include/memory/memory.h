@@ -8,8 +8,7 @@
 
 constexpr size_t MEMORY_MAP_SIZE = 0x10000; // 64 KB
 
-class Memory {
-public:
+struct Memory {
     Memory();
 
     void LoadFile(const std::string& file_name);
@@ -25,9 +24,6 @@ public:
     void PPUWrite(uint16_t address, uint8_t value);
     void PPURegisterWrite(PPUregister reg, uint8_t value);
 
-    bool GetPPUSTATUSsignal();
-    bool GetPPUCTRLsignal();
-private:
     std::vector<char> cpu_bus = std::vector<char>(MEMORY_MAP_SIZE);
     std::vector<char> ppu_bus = std::vector<char>(MEMORY_MAP_SIZE);
 

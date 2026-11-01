@@ -24,7 +24,7 @@ void CPU::FetchInstruction() {
         PollInterrupts();
     }
 
-    inst_step = InstructionStep::CALCULATE_ADDRESS;
+    cycle_type = CycleType::CALCULATE_ADDRESS;
 }
 
 void CPU::CalculateAddress() {
@@ -37,7 +37,7 @@ void CPU::ExecuteInstruction() {
 
 void CPU::CompleteAddressingMode() {
     cycle_step = 0;
-    inst_step = InstructionStep::EXECUTE;
+    cycle_type = CycleType::EXECUTE;
 
     bool is_store = (
         inst_func == instructions::access::StoreAccumulator ||
@@ -65,6 +65,6 @@ void CPU::PollInterrupts() {
 }
 
 void CPU::CompleteInstruction() {
-    inst_step = InstructionStep::FETCH;
+    cycle_type = CycleType::FETCH;
     cycle_step = 0;
 }

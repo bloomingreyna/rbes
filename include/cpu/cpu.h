@@ -7,10 +7,9 @@
 #include <cpu/alu.h>
 #include <cpu/enums.h>
 
-class Memory;
+struct Memory;
 
-class CPU {
-public:
+struct CPU {
     CPU(Memory* mem);
 
     void Initialize();
@@ -48,7 +47,7 @@ public:
     int inst_cycle_count;
 
     Instruction instruction;
-    InstructionStep inst_step = InstructionStep::INITIALIZE;
+    CycleType cycle_type = CycleType::INITIALIZE;
 
     uint16_t address_bus;
     uint8_t data_bus;

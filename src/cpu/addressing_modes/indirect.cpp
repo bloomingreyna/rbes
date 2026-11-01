@@ -20,7 +20,7 @@ void addressing_modes::Indirect(CPU& cpu, int step) {
         case 3: {
             cpu.latch = cpu.data_bus;
 
-            // There is a bug in the original CPU that does not allow the pointer increment to properly cross pages. The below code implements this bug.
+            // Implementation of a bug that causes the high byte to not increment properly on page cross
             uint8_t ptr_low = cpu.address_bus & 0xFF;
             ptr_low++;
             cpu.address_bus &= 0xFF00;

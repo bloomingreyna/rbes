@@ -4,20 +4,20 @@
 void CPU::Tick() {
     cycle_count++;
 
-    switch (inst_step) {
-        case InstructionStep::INITIALIZE: {
+    switch (cycle_type) {
+        case CycleType::INITIALIZE: {
             Initialize();
             break;
         }
-        case InstructionStep::FETCH: {
+        case CycleType::FETCH: {
             FetchInstruction();
             break;
         }
-        case InstructionStep::CALCULATE_ADDRESS: {
+        case CycleType::CALCULATE_ADDRESS: {
             CalculateAddress();
             break;
         };
-        case InstructionStep::EXECUTE: {
+        case CycleType::EXECUTE: {
             ExecuteInstruction();
             break;
         }
@@ -32,7 +32,7 @@ void CPU::Tick() {
         PollInterrupts();
     }
 
-    if (inst_step == InstructionStep::FETCH) {
+    if (cycle_type == CycleType::FETCH) {
         cycle_count = 0;
     }
 

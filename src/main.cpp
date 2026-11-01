@@ -2,44 +2,80 @@
 
 #include <cpu/cpu.h>
 #include <memory/memory.h>
+#include <ppu/ppu.h>
 
-// #define EMU_DEBUG
-
-int main(int argc, char* argv[]) {
+namespace {
     Memory mem;
     CPU cpu(&mem);
+    PPU ppu(&mem);
 
-    cpu.InitializeAddressingModes();
-    cpu.InitializeInstructions();
+    constexpr float CLOCK_SPEED_HZ = 236.25 / 11 * 1000;
+    constexpr float CLOCKS_PER_FRAME = CLOCK_SPEED_HZ / 60.0988;
 
-    std::string file_name = argv[1];
+    constexpr int CPU_CLOCK_RATIO = 12;
+    constexpr int PPU_CLOCK_RATIO = 4;
 
-    mem.LoadFile(file_name);
+    constexpr int PPU_TO_CPU_RATIO = 3;
+    constexpr int CPU_PPU_SIGNAL_RESET_CLOCK = CPU_CLOCK_RATIO - PPU_TO_CPU_RATIO;
 
-    cpu.program_counter = (mem.CPURead(0xFFFD) << 8) | mem.CPURead(0xFFFC);
-    cpu.inst_step = InstructionStep::FETCH;
+    float clock_accumulator = 0.0f;
+    int cpu_clock = 0;
+    int ppu_clock = 0;
+}
 
-    uint16_t text_output_index = 0x6004;
-    while (true) { // TODO: Fix loop stopping for no reason
-        cpu.Tick();
+void CPUloopLogic();
+void PPUloopLogic();
 
-#ifdef EMU_DEBUG
-        std::cout << static_cast<int>(cpu.inst_step) << ", ";
-        std::cout << reinterpret_cast<void*>(cpu.program_counter) << ", ";
-        std::cout << reinterpret_cast<void*>(cpu.program_counter - 0x8000 + 0x10) << ", "; // ROM address
-        std::cout << reinterpret_cast<void*>(cpu.instruction) << '\n';
+void FrameUpdate();
+void AudioUpdate();
 
-        if (cpu.instruction == Instruction::BIT_ABS) {
-            std::cout << "Accumulator: " << reinterpret_cast<void*>(cpu.accumulator) << ", ";
-            std::cout << "Memory: " << reinterpret_cast<void*>(cpu.data_bus) << ", ";
-            std::cout << "Status: " << reinterpret_cast<void*>(cpu.data_bus) << '\n';
+int main(int argc, char* argv[]) {
+    mem.LoadFile(argv[1]);
+
+    while (true) {
+        while (clock_accumulator++ < CLOCKS_PER_FRAME) {
+            CPUloopLogic();
+            PPUloopLogic();
         }
-#endif
+        clock_accumulator -= CLOCKS_PER_FRAME;
 
-        if (mem.CPURead(text_output_index) != 0x00) {
-            std::cout << static_cast<int>(mem.CPURead(text_output_index++));
-        }
+        FrameUpdate();
+        AudioUpdate();
     }
-    std::cout << "Here";
-    return 0;
+}
+
+/* ---- */
+
+void CPUloopLogic() {
+    cpu_clock++;
+    cpu_clock %= CPU_CLOCK_RATIO;
+
+    if (cpu_clock == 0) {
+        cpu.Tick();
+    }
+
+    if (cpu_clock == CPU_PPU_SIGNAL_RESET_CLOCK) {
+        mem.ppustatus_signal = false;
+    }
+}
+
+void PPUloopLogic() {
+    ppu_clock++;
+    ppu_clock %= PPU_CLOCK_RATIO;
+
+    if (ppu_clock == 0) {
+        ppu.Tick();
+    }
+
+    if (mem.ppustatus_signal) {
+        ppu.vblank_flag = false;
+    }
+}
+
+void FrameUpdate() {
+
+}
+
+void AudioUpdate() {
+
 }

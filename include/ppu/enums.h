@@ -7,5 +7,5 @@ enum class EOflag {
 enum class Timing {
     SCANLINE_COUNT = 262,
     DOTS_PER_SCANLINE = 341,
-    VBLANK_START = 240 // Zero-indexed, nesdev notes it as 241
+    VBLANK_START = 241
 };
