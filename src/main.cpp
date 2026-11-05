@@ -1,4 +1,5 @@
 #include <iostream>
+#include <unordered_set>
 
 #include <cpu/cpu.h>
 #include <memory/memory.h>
@@ -21,6 +22,10 @@ namespace {
     float clock_accumulator = 0.0f;
     int cpu_clock = 0;
     int ppu_clock = 0;
+
+    bool nmi_generated = false;
+
+    uint16_t null_term_address = 0x6004;
 }
 
 void CPUloopLogic();
@@ -29,8 +34,14 @@ void PPUloopLogic();
 void FrameUpdate();
 void AudioUpdate();
 
+void DebugLog();
+
 int main(int argc, char* argv[]) {
     mem.LoadFile(argv[1]);
+    std::cout << reinterpret_cast<void*>(mem.cpu_bus[0xE447]) << '\n';
+
+    cpu.program_counter = (mem.cpu_bus[0xFFFD] << 8) | (mem.cpu_bus[0xFFFC] & 0xFF);
+    cpu.cycle_type = CycleType::FETCH;
 
     while (true) {
         while (clock_accumulator++ < CLOCKS_PER_FRAME) {
@@ -41,17 +52,25 @@ int main(int argc, char* argv[]) {
 
         FrameUpdate();
         AudioUpdate();
+
+        DebugLog();
     }
 }
 
 /* ---- */
 
+
 void CPUloopLogic() {
+    cpu.nmi_input = nmi_generated;
+
     cpu_clock++;
     cpu_clock %= CPU_CLOCK_RATIO;
 
     if (cpu_clock == 0) {
         cpu.Tick();
+        std::cout << "PC: " << reinterpret_cast<void*>(cpu.program_counter) << ", ";
+        std::cout << "ROM PC: " << reinterpret_cast<void*>(cpu.program_counter - 0x8000 + 0x10) << ", ";
+        std::cout << "Opcode: " << reinterpret_cast<void*>(cpu.instruction) << '\n';
     }
 
     if (cpu_clock == CPU_PPU_SIGNAL_RESET_CLOCK) {
@@ -70,6 +89,11 @@ void PPUloopLogic() {
     if (mem.ppustatus_signal) {
         ppu.vblank_flag = false;
     }
+
+    uint8_t ppustatus = mem.PPURegisterRead(PPUregister::PPUSTATUS);
+    mem.PPURegisterWrite(PPUregister::PPUSTATUS, (ppustatus & ~0x80) | (ppu.vblank_flag << 7));
+
+    nmi_generated = ppu.vblank_flag && ppu.nmi_output;
 }
 
 void FrameUpdate() {
@@ -78,4 +102,10 @@ void FrameUpdate() {
 
 void AudioUpdate() {
 
+}
+
+void DebugLog() {
+    while (mem.cpu_bus[null_term_address] != 0x00) {
+        std::cout << mem.cpu_bus[null_term_address++];
+    }
 }

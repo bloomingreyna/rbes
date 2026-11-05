@@ -1,4 +1,7 @@
+#include <iostream>
+
 #include <cpu/cpu.h>
+#include <cpu/instructions.h>
 #include <memory/memory.h>
 
 void CPU::Tick() {

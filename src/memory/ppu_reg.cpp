@@ -15,7 +15,7 @@ void Memory::CPU_PPURegisterReadHandler(uint16_t address) {
 void Memory::CPU_PPURegisterWriteHandler(uint16_t address, uint8_t value) {
     switch (static_cast<PPUregister>(address)) {
         case PPUregister::PPUCTRL: {
-            ppu_bus[static_cast<size_t>(PPUregister::PPUCTRL)] = value;
+            cpu_bus[static_cast<size_t>(PPUregister::PPUCTRL)] = value;
             break;
         }
         default: { break; }

@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include <cpu/cpu.h>
 #include <cpu/instructions.h>
 #include <memory/memory.h>
@@ -8,8 +10,9 @@ void CPU::FetchInstruction() {
     address_bus = program_counter++;
     data_bus = memory->CPURead(address_bus);
 
-    instruction = static_cast<Instruction>(data_bus);
-    if (service_interrupt) {
+    if (!service_interrupt) {
+        instruction = static_cast<Instruction>(data_bus);
+    } else {
         instruction = Instruction::BRK;
         service_interrupt = false;
         is_hardware_interrupt = true;
@@ -50,6 +53,10 @@ void CPU::CompleteAddressingMode() {
 }
 
 void CPU::CheckInterruptInputs() {
+    if (memory->ppustatus_signal) {
+        nmi_input = false;
+    }
+
     if (!nmi_last_state && nmi_input) {
         nmi_signal = true;
     }

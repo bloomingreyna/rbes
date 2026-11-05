@@ -55,10 +55,10 @@ void ALU::BIT(uint8_t lhs, uint8_t rhs) {
     if (result == 0) {
         status |= Flag::ZERO;
     }
-    if ((result & 0x40) != 0) {
+    if ((rhs & 0x40) != 0) {
         status |= Flag::OVERFLOW;
     }
-    if ((result & 0x80) != 0) {
+    if ((rhs & 0x80) != 0) {
         status |= Flag::NEGATIVE;
     }
 }
