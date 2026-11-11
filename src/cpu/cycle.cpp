@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include <cpu/cpu.h>
 #include <cpu/instructions.h>
 #include <memory/memory.h>
@@ -26,12 +24,7 @@ void CPU::Tick() {
         }
     }
 
-    bool branch_page_cross_poll = (
-        inst_cycle_count == -1 &&
-        cycle_count == 3 &&
-        ((alu.status & Flag::OVERFLOW) != 0 || (alu.status & Flag::NEGATIVE) != 0)
-    );
-    if ((cycle_count == inst_cycle_count || branch_page_cross_poll) && !is_hardware_interrupt) {
+    if (inst_cycle_count != -1 && cycle_count == inst_cycle_count && !is_hardware_interrupt) {
         PollInterrupts();
     }
 

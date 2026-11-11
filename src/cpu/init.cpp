@@ -1,6 +1,4 @@
-#include <iostream>
 #include <unordered_map>
-#include <unordered_set>
 #include <vector>
 
 #include <cpu/addressing_modes.h>

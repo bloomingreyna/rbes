@@ -18,7 +18,7 @@ void Memory::LoadFile(const std::string& file_name) {
     exe_path[dir_name_length + 1] = '\0';
 
     std::string rom_path = exe_path.get();
-    rom_path += "roms\\" + file_name;
+    rom_path += "roms/" + file_name;
 
     std::uintmax_t file_size = std::filesystem::file_size(rom_path);
     std::ifstream file(rom_path.c_str(), std::ios::binary);
@@ -28,7 +28,7 @@ void Memory::LoadFile(const std::string& file_name) {
 
     size_t cartridge_start = static_cast<size_t>(AddressStart::CARTRIDGE);
 
-    for (size_t i = 0x8000; i < 0x8000 + 1024 * 32; ++i) {
+    for (size_t i = 0x8000; i < 0x8000 + 1024 * 16; ++i) {
         size_t buffer_index = i - 0x8000 + 16;
         cpu_bus[i] = buffer[buffer_index];
     }

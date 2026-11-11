@@ -1,6 +1,12 @@
 #include <cpu/cpu.h>
 #include <cpu/instructions.h>
 
+void SpecialInterruptPoll(CPU& cpu) {
+    if ((cpu.alu.status & (Flag::OVERFLOW | Flag::NEGATIVE)) != 0) {
+        cpu.PollInterrupts();
+    }
+}
+
 void FixupCycle(CPU& cpu) {
     cpu.program_counter &= 0xFF00;
     cpu.program_counter |= cpu.alu.result;
@@ -8,7 +14,7 @@ void FixupCycle(CPU& cpu) {
     if ((cpu.alu.status & Flag::OVERFLOW) != 0) {
         cpu.alu.Increment(cpu.program_counter >> 8);
     } else if ((cpu.alu.status & Flag::NEGATIVE) != 0) {
-        cpu.alu.Decrement(cpu.program_counter & 0xFF);
+        cpu.alu.Decrement(cpu.program_counter >> 8);
     } else {
         cpu.CompleteInstruction();
     }
@@ -21,6 +27,7 @@ void instructions::branch::BranchCarryClear(CPU& cpu, int step) {
                 cpu.CompleteInstruction();
             } else {
                 cpu.alu.Add(cpu.program_counter & 0xFF, cpu.data_bus);
+                SpecialInterruptPoll(cpu);
             }
             break;
         }
@@ -45,6 +52,7 @@ void instructions::branch::BranchCarrySet(CPU& cpu, int step) {
                 cpu.CompleteInstruction();
             } else {
                 cpu.alu.Add(cpu.program_counter & 0xFF, cpu.data_bus);
+                SpecialInterruptPoll(cpu);
             }
             break;
         }
@@ -69,6 +77,7 @@ void instructions::branch::BranchEqual(CPU& cpu, int step) {
                 cpu.CompleteInstruction();
             } else {
                 cpu.alu.Add(cpu.program_counter & 0xFF, cpu.data_bus);
+                SpecialInterruptPoll(cpu);
             }
             break;
         }
@@ -94,6 +103,7 @@ void instructions::branch::BranchNotEqual(CPU& cpu, int step) {
                 cpu.CompleteInstruction();
             } else {
                 cpu.alu.Add(cpu.program_counter & 0xFF, cpu.data_bus);
+                SpecialInterruptPoll(cpu);
             }
             break;
         }
@@ -119,6 +129,7 @@ void instructions::branch::BranchPositive(CPU& cpu, int step) {
                 cpu.CompleteInstruction();
             } else {
                 cpu.alu.Add(cpu.program_counter & 0xFF, cpu.data_bus);
+                SpecialInterruptPoll(cpu);
             }
             break;
         }
@@ -144,6 +155,7 @@ void instructions::branch::BranchNegative(CPU& cpu, int step) {
                 cpu.CompleteInstruction();
             } else {
                 cpu.alu.Add(cpu.program_counter & 0xFF, cpu.data_bus);
+                SpecialInterruptPoll(cpu);
             }
             break;
         }
@@ -169,6 +181,7 @@ void instructions::branch::BranchOverflowClear(CPU& cpu, int step) {
                 cpu.CompleteInstruction();
             } else {
                 cpu.alu.Add(cpu.program_counter & 0xFF, cpu.data_bus);
+                SpecialInterruptPoll(cpu);
             }
             break;
         }
@@ -194,6 +207,7 @@ void instructions::branch::BranchOverflowSet(CPU& cpu, int step) {
                 cpu.CompleteInstruction();
             } else {
                 cpu.alu.Add(cpu.program_counter & 0xFF, cpu.data_bus);
+                SpecialInterruptPoll(cpu);
             }
             break;
         }

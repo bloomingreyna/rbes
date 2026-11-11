@@ -1,5 +1,4 @@
 #include <iostream>
-#include <unordered_set>
 
 #include <cpu/cpu.h>
 #include <memory/memory.h>
@@ -71,6 +70,10 @@ void CPUloopLogic() {
         std::cout << "PC: " << reinterpret_cast<void*>(cpu.program_counter) << ", ";
         std::cout << "ROM PC: " << reinterpret_cast<void*>(cpu.program_counter - 0x8000 + 0x10) << ", ";
         std::cout << "Opcode: " << reinterpret_cast<void*>(cpu.instruction) << '\n';
+    }
+
+    if (cpu.program_counter == 0xC66E) {
+        std::terminate();
     }
 
     if (cpu_clock == CPU_PPU_SIGNAL_RESET_CLOCK) {

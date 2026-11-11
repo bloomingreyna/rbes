@@ -1,6 +1,8 @@
 #include <cpu/cpu.h>
 #include <cpu/instructions.h>
 
+// TODO: Fix cycle counts. Working on other shit rn :sob:
+
 void instructions::stack::PushAccumulator(CPU& cpu, int step) {
     cpu.rw_line = RWline::WRITE;
 
