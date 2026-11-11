@@ -1,3 +1,5 @@
+# THIS PROJECT IS ON HIATUS. DO NOT EXPECT ANYTHING.
+
 # Reyna's Blooming Entertainment System (RBES)
 
 RBES (pronounced like the shittiest fast food chain of all time, Arby's) is my attempt at an emulator for the original Nintendo Entertainment System. It's a console far beyond my years (born in the year of our Lord 2007), but I've always wanted to eventually play all that old-school shit. Castlevania goes so hard. By the way, did you know that the term "Metroidvania" is, in reality, a fusion of "Metroid" and "Pennsylvania"? It's true, trust me.
